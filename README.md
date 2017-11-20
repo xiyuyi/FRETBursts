@@ -5,7 +5,7 @@ FRETBursts
 [![TravisCI Build Status](https://travis-ci.org/OpenSMFS/FRETBursts.svg?branch=master)](https://travis-ci.org/OpenSMFS/FRETBursts)
 [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/g0ih9gvm7r8459to/branch/master?svg=true)](https://ci.appveyor.com/project/tritemio/fretbursts-llfcd/branch/master)
 
-> *Quick links: [Reference documentation](http://fretbursts.readthedocs.org/), [FRETBursts tutorials](https://github.com/OpenSMFS/FRETBursts_notebooks#fretbursts-notebooks), [bioRxiv paper](http://dx.doi.org/10.1101/039198)*
+> *Quick links: [Reference documentation](http://fretbursts.readthedocs.org/), [FRETBursts tutorials](https://github.com/OpenSMFS/FRETBursts_notebooks#fretbursts-notebooks), [FRETBursts paper](http://dx.doi.org/10.1101/039198)*
 
 Latest News
 -----------
