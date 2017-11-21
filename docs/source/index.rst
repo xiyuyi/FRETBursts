@@ -85,7 +85,6 @@ reference API documentation.
 * :doc:`What's new? <releasenotes>`
 * `μs-ALEX Tutorial <http://nbviewer.jupyter.org/github/OpenSMFS/FRETBursts_notebooks/blob/master/notebooks/FRETBursts%20-%20us-ALEX%20smFRET%20burst%20analysis.ipynb>`__
 * `List of Jupyter Notebooks <https://github.com/OpenSMFS/FRETBursts_notebooks#fretbursts-notebooks>`__
-* `FRETBursts Paper <http://dx.doi.org/10.1101/039198>`__
 * :doc:`Reference manual <reference_manual>`
 
 .. raw:: html
@@ -94,6 +93,7 @@ reference API documentation.
    <div class="col-md-3">
    <h2>Features</h2>
 
+* `FRETBursts Paper <http://dx.doi.org/10.1101/039198>`__
 * :doc:`Burst Search Algorithm <burstsearch>`
 * `BVA <http://nbviewer.jupyter.org/github/OpenSMFS/FRETBursts_notebooks/blob/master/notebooks/Example%20-%20Burst%20Variance%20Analysis.ipynb>`__
 * `2CDE <http://nbviewer.jupyter.org/github/OpenSMFS/FRETBursts_notebooks/blob/master/notebooks/Example%20-%202CDE%20Method.ipynb>`__
