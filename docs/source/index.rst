@@ -22,7 +22,7 @@ Single-molecule FRET burst analysis
           </div>
         </a>
 
-        <a href="http://nbviewer.jupyter.org/github/OpenSMFS/FRETBursts_notebooks/blob/master/notebooks/FRETBursts%20-%20us-ALEX%20smFRET%20burst%20analysis.ipynb#Background-estimation">
+        <a href="http://nbviewer.jupyter.org/github/OpenSMFS/FRETBursts_notebooks/blob/master/notebooks/Example%20-%20Background%20estimation.ipynb">
           <div class="col-sm-2 thumbnail">
             <img src="_static/hist_bg_fit.png">
           </div>
