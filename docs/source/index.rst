@@ -68,8 +68,8 @@ Single-molecule FRET burst analysis
 python package for burst analysis of freely-diffusing
 `single-molecule FRET <https://en.wikipedia.org/wiki/Single-molecule_FRET>`__
 data for single and multi-spot experiments. FRETBursts supports both
-single-laser and dual-laser alternated excitation (
-`ALEX <https://doi.org/10.1073/pnas.0401690101>`__ and
+single-laser and dual-laser alternated excitation
+(`ALEX <https://doi.org/10.1073/pnas.0401690101>`__ and
 `PAX <https://doi.org/10.1007/s00249-007-0133-7>`__)
 as well as
 `ns-ALEX <https://doi.org/10.1073/pnas.0508584102>`__ (or
