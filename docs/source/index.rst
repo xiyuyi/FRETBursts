@@ -64,15 +64,19 @@ Single-molecule FRET burst analysis
     <br>
 
 
-`FRETBursts <http://opensmfs.github.io/FRETBursts/>`__ is an open-source (GPLv2) python package for burst analysis of
-freely-diffusing single-molecule FRET data for single and multi-spot experiments.
+`FRETBursts <http://opensmfs.github.io/FRETBursts/>`__ is an open-source
+python package for burst analysis of freely-diffusing
+`single-molecule FRET <https://en.wikipedia.org/wiki/Single-molecule_FRET>`__
+data for single and multi-spot experiments. FRETBursts supports both
+single-laser and dual-laser alternated excitation (ALEX and PAX)
+as well as ns-ALEX (or PIE).
 
-See :ref:`getting-started` for installation instructions.
-The development version can be found on the `GitHub repository <https://github.com/OpenSMFS/FRETBursts>`_.
-For information on new versions see :doc:`release notes <releasenotes>`.
+We provide well-tested implementations of state-of-the-art
+algorithms for confocal smFRET analysis.
+We focus on computational reproducibility,
+by using `Jupyter notebook <http://jupyter.org/>`__ based interfaces.
 
-This documentation contains installation instructions and the
-reference API documentation.
+Please send questions or report issue on `GitHub <https://github.com/OpenSMFS/FRETBursts/issues>`__.
 
 .. raw:: html
 
