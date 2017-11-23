@@ -17,37 +17,37 @@ Single-molecule FRET burst analysis
       <div class="row align-items-center">
 
         <a href="http://nbviewer.jupyter.org/github/OpenSMFS/FRETBursts_notebooks/blob/master/notebooks/Example%20-%20Selecting%20FRET%20populations.ipynb">
-          <div class="col-sm-2 thumbnail">
+          <div class="col-sm-2 thumbnail" title="Burst search and burst selection">
             <img src="_static/alex_jointplot_fit.png">
           </div>
         </a>
 
         <a href="http://nbviewer.jupyter.org/github/OpenSMFS/FRETBursts_notebooks/blob/master/notebooks/Example%20-%20Background%20estimation.ipynb">
-          <div class="col-sm-2 thumbnail">
+          <div class="col-sm-2 thumbnail" title="Computing and plotting background">
             <img src="_static/hist_bg_fit.png">
           </div>
         </a>
 
         <a href="http://nbviewer.jupyter.org/github/OpenSMFS/FRETBursts_notebooks/blob/master/notebooks/Example%20-%20Plotting%20timetraces%20with%20bursts.ipynb">
-          <div class="col-sm-2 thumbnail">
+          <div class="col-sm-2 thumbnail" title="Plotting timetraces with bursts">
             <img src="_static/timetrace_bursts.png">
           </div>
         </a>
 
         <a href="http://nbviewer.jupyter.org/github/OpenSMFS/FRETBursts_notebooks/blob/master/notebooks/Example%20-%20Burst%20Variance%20Analysis.ipynb">
-          <div class="col-sm-2 thumbnail">
+          <div class="col-sm-2 thumbnail" title="Burst Variance Analysis">
             <img src="_static/BVA_joint.png">
           </div>
         </a>
 
         <a href="http://nbviewer.jupyter.org/github/OpenSMFS/FRETBursts_notebooks/blob/master/notebooks/Example%20-%202CDE%20Method.ipynb">
-          <div class="col-sm-2 thumbnail">
+          <div class="col-sm-2 thumbnail" title="2-Channel Kernel Density Estimation">
             <img src="_static/2cde_joint.png">
           </div>
         </a>
 
         <a href="http://nbviewer.jupyter.org/github/OpenSMFS/FRETBursts_notebooks/blob/master/notebooks/Example%20-%20FRET%20histogram%20fitting.ipynb">
-          <div class="col-sm-2 thumbnail">
+          <div class="col-sm-2 thumbnail" title="Fitting FRET histograms">
             <img src="_static/fret_hist_fit.png">
           </div>
         </a>

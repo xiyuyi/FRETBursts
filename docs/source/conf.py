@@ -63,11 +63,20 @@ html_theme_options = {
     'source_link_position': "footer",
     'bootswatch_theme': "paper",
     'navbar_sidebarrel': False,
+    # Render the current pages TOC in the navbar. (Default: true)
+    'navbar_pagenav': True,
+
+    # Tab name for the current pages TOC. (Default: "Page")
+    'navbar_pagenav_name': "Page",
+
+    # Global TOC depth for "site" navbar tab. (Default: 1)
+    # Switching to -1 shows all levels.
+    'globaltoc_depth': -1,
+
     'bootstrap_version': "3",
     'navbar_links': [
-                     #("Gallery", "examples/index"),
-                     ("Tutorial", "tutorial"),
-                     ("API", "api"),
+                     ("Tutorial", "http://nbviewer.jupyter.org/github/OpenSMFS/FRETBursts_notebooks/blob/master/notebooks/FRETBursts%20-%20us-ALEX%20smFRET%20burst%20analysis.ipynb", True),
+                     ("Reference Manual", "reference_manual"),
                      ],
     }
 
