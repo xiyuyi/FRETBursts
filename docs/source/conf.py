@@ -54,18 +54,52 @@ except ImportError:
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath('../..'))
 import fretbursts
-version = fretbursts._version.get_versions()['version']
-if on_rtd:
-    # RTD modifies conf.py so the git repo becomes dirty
-    # We strip the '-dirty' that would generate a wrong verion string
-    version = version.replace('.dirty', '')
+version = fretbursts._version.get_versions()['version'][:13]
 release = version
 
+import sphinx_bootstrap_theme
+html_theme = 'bootstrap'
+html_theme_options = {
+    'source_link_position': "footer",
+    'bootswatch_theme': "paper",
+    'navbar_sidebarrel': False,
+    'bootstrap_version': "3",
+    'navbar_links': [
+                     #("Gallery", "examples/index"),
+                     ("Tutorial", "tutorial"),
+                     ("API", "api"),
+                     ],
+    }
 
-if not on_rtd:
-    import sphinx_rtd_theme
-    html_theme = 'sphinx_rtd_theme'
-    html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+# Add any paths that contain custom themes here, relative to this directory.
+html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
+
+# The name for this set of Sphinx documents.  If None, it defaults to
+# "<project> v<release> documentation".
+#html_title = None
+
+# A shorter title for the navigation bar.  Default is the same as html_title.
+#html_short_title = None
+
+# The name of an image file (relative to this directory) to place at the top
+# of the sidebar.
+#html_logo = None
+
+# The name of an image file (within the static path) to use as favicon of the
+# docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
+# pixels large.
+html_favicon = "_static/favicon.png"
+
+# Add any paths that contain custom static files (such as style sheets) here,
+# relative to this directory. They are copied after the builtin static files,
+# so a file named "default.css" will overwrite the builtin "default.css".
+html_static_path = ['_static']
+
+
+# if not on_rtd:
+#     import sphinx_rtd_theme
+#     html_theme = 'sphinx_rtd_theme'
+#     html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
     #html_theme_path = ["_themes", ]
 
 
@@ -178,7 +212,7 @@ pygments_style = 'sphinx'
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-#html_logo = None
+html_logo = '_static/logo.png'
 
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
@@ -188,7 +222,7 @@ pygments_style = 'sphinx'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ['_static', 'images']
 
 # Add any extra paths that contain custom files (such as robots.txt or
 # .htaccess) here, relative to this directory. These files are copied
@@ -317,3 +351,10 @@ texinfo_documents = [
 
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 #texinfo_no_detailmenu = False
+
+
+# Add the 'copybutton' javascript, to hide/show the prompt in code
+# examples, originally taken from scikit-learn's doc/conf.py
+def setup(app):
+    #app.add_javascript('copybutton.js')
+    app.add_stylesheet('style.css')
