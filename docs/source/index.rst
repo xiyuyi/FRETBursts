@@ -88,12 +88,15 @@ Please send questions or report issue on `GitHub <https://github.com/OpenSMFS/FR
    <div class="col-md-3">
    <h2>Documentation</h2>
 
-* `Introducing FRETBursts <http://tritemio.github.io/smbits/2016/02/19/fretbursts>`__
-* :doc:`Installation <getting_started>`
-* :doc:`What's new? <releasenotes>`
-* `μs-ALEX Tutorial <http://nbviewer.jupyter.org/github/OpenSMFS/FRETBursts_notebooks/blob/master/notebooks/FRETBursts%20-%20us-ALEX%20smFRET%20burst%20analysis.ipynb>`__
-* `List of Jupyter Notebooks <https://github.com/OpenSMFS/FRETBursts_notebooks#fretbursts-notebooks>`__
-* :doc:`Reference manual <reference_manual>`
+.. toctree::
+    :maxdepth: 1
+
+    Introducing FRETBursts <http://tritemio.github.io/smbits/2016/02/19/fretbursts>
+    getting_started
+    What's New? <releasenotes>
+    μs-ALEX Tutorial <http://nbviewer.jupyter.org/github/OpenSMFS/FRETBursts_notebooks/blob/master/notebooks/FRETBursts%20-%20us-ALEX%20smFRET%20burst%20analysis.ipynb>
+    List of Jupyter Notebooks <https://github.com/OpenSMFS/FRETBursts_notebooks#fretbursts-notebooks>
+    Reference manual <reference_manual>
 
 .. raw:: html
 
@@ -101,9 +104,12 @@ Please send questions or report issue on `GitHub <https://github.com/OpenSMFS/FR
    <div class="col-md-3">
    <h2>Features</h2>
 
-* `FRETBursts Paper <http://dx.doi.org/10.1101/039198>`__
-* :doc:`Burst Search Algorithm <burstsearch>`
-* `BVA <http://nbviewer.jupyter.org/github/OpenSMFS/FRETBursts_notebooks/blob/master/notebooks/Example%20-%20Burst%20Variance%20Analysis.ipynb>`__
-* `2CDE <http://nbviewer.jupyter.org/github/OpenSMFS/FRETBursts_notebooks/blob/master/notebooks/Example%20-%202CDE%20Method.ipynb>`__
-* `Exporting burst data <http://nbviewer.jupyter.org/github/OpenSMFS/FRETBursts_notebooks/blob/master/notebooks/Example%20-%20Exporting%20Burst%20Data%20Including%20Timestamps.ipynb>`__
-* `Report an issue <https://github.com/opensmfs/FRETBursts/issues>`__
+.. toctree::
+    :maxdepth: 1
+
+    FRETBursts Paper <http://dx.doi.org/10.1101/039198>
+    Burst Search Algorithm <burstsearch>
+    BVA <http://nbviewer.jupyter.org/github/OpenSMFS/FRETBursts_notebooks/blob/master/notebooks/Example%20-%20Burst%20Variance%20Analysis.ipynb>
+    2CDE <http://nbviewer.jupyter.org/github/OpenSMFS/FRETBursts_notebooks/blob/master/notebooks/Example%20-%202CDE%20Method.ipynb>
+    Exporting burst data <http://nbviewer.jupyter.org/github/OpenSMFS/FRETBursts_notebooks/blob/master/notebooks/Example%20-%20Exporting%20Burst%20Data%20Including%20Timestamps.ipynb>
+    Report an issue <https://github.com/opensmfs/FRETBursts/issues>
