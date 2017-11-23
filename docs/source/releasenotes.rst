@@ -3,9 +3,12 @@ FRETBursts Release Notes
 
 Version 0.6.5 (Aug. 2017)
 -------------------------
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.848292.svg
+   :target: https://doi.org/10.5281/zenodo.848292
+
 
 This is a minor release with an important bug fix for histograms plots
-and other tweaks mostly for PAX. New "short notebooks" for common tasks 
+and other tweaks mostly for PAX. New "short notebooks" for common tasks
 have also been added.
 
 Bug fixes:
@@ -33,6 +36,8 @@ Other changes:
 
 Version 0.6.4 (Jul. 2017)
 --------------------------
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.825897.svg
+   :target: https://doi.org/10.5281/zenodo.825897
 
 This release adds support for *periodic acceptor excitation* (PAX)
 measurements. PAX is similar to μs-ALEX, with the difference that only the
@@ -86,6 +91,8 @@ issue please report it on github.
 
 Version 0.6.2 (Apr. 2017)
 --------------------------
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.495817.svg
+   :target: https://doi.org/10.5281/zenodo.495817
 
 This is a technical release that removes the hard dependency on QT
 and solves some installation issues due to QT pinning on conda-forge.
@@ -93,6 +100,8 @@ and solves some installation issues due to QT pinning on conda-forge.
 
 Version 0.6.1 (Apr. 2017)
 --------------------------
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.439688.svg
+   :target: https://doi.org/10.5281/zenodo.439688
 
 For this version of FRETBursts, conda packages are distributed for
 python 2.7, 3.5, 3.6 and numpy 1.11 and 1.12. FRETBursts still works
@@ -122,6 +131,8 @@ The current release includes the following changes:
 
 Version 0.6 (Jan. 2017)
 -----------------------
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.239229.svg
+   :target: https://doi.org/10.5281/zenodo.239229
 
 .. module:: fretbursts.burstlib
 
