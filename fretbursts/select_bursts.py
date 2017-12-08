@@ -225,7 +225,7 @@ def size(d, ich=0, th1=20, th2=np.inf, add_naa=False, gamma=1., beta=1.,
         th2 = th2[ich]
     bursts_mask = (burst_size >= th1) * (burst_size <= th2)
     s = "size_th%d" % th1
-    if th2 < 1000:
+    if th2 < np.inf:
         s += "_th2_%d" % th2
     return bursts_mask, s + str_G(gamma, donor_ref)
 
