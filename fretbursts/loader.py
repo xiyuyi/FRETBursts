@@ -546,7 +546,7 @@ def nsalex_apply_period(d, delete_ph_t=True):
 
     *See also:* :func:`alex_apply_period`.
     """
-    ich = 0
+    ich = 0   # we only support single-spot here
     donor_ch, accept_ch = d._det_donor_accept_multich[ich]
     D_ON_multi, A_ON_multi = d._D_ON_multich[ich], d._A_ON_multich[ich]
     D_ON = [(D_ON_multi[i], D_ON_multi[i+1]) for i in range(0, len(D_ON_multi), 2)]
@@ -572,8 +572,8 @@ def nsalex_apply_period(d, delete_ph_t=True):
     mask = da_ch_mask_t * ex_mask_t  # logical AND
 
     # Apply selection to timestamps and nanotimes
-    ph_times = d.ph_times_t[ich][mask]
-    nanotimes = d.nanotimes_t[ich][mask]
+    ph_times = d.ph_times_t[ich][:][mask]
+    nanotimes = d.nanotimes_t[ich][:][mask]
 
     # Apply selection to the emission masks
     d_em = d_ch_mask_t[mask]
