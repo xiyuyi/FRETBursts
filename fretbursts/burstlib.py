@@ -1020,6 +1020,10 @@ class Data(DataContainer):
         return self._get_tuple_multich('det_donor_accept')
 
     @property
+    def _det_p_s_pol_multich(self):
+        return self._get_tuple_multich('det_p_s_pol')
+
+    @property
     def _aex_fraction(self):
         """Proportion of Aex period versus Dex + Aex."""
         assert self.alternated

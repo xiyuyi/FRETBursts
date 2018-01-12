@@ -90,9 +90,9 @@ def _get_measurement_specs(ph_data, setup):
         msg = ('This file contains {n} {type} channels.\n'
                'Unfortunately, the current FRETBursts version only supports\n'
                '{nvalid} {type} channel.')
-        if setup.num_polarization_ch.read() != 1:
+        if setup.num_polarization_ch.read() > 2:
             raise ValueError(msg.format(n=setup.num_polarization_ch.read(),
-                                        type='polarization', nvalid=1))
+                                        type='polarization', nvalid='1 or 2'))
         if setup.num_split_ch.read() != 1:
             raise ValueError(msg.format(n=setup.num_split_ch.read(),
                                         type='split', nvalid=1))
@@ -110,6 +110,23 @@ def _get_measurement_specs(ph_data, setup):
                 meas_type = 'smFRET-nsALEX'
             else:
                 meas_type = 'smFRET-usALEX'
+        if setup.num_polarization_ch.read() > 1:
+            meas_type += '-2pol'
+        # Check consistency of polarization specs
+        if meas_specs is not None:
+            det_specs = meas_specs['detectors_specs']
+            if setup.num_polarization_ch.read() == 1:
+                if all('polarization_ch%i' in det_specs for i in (1, 2)):
+                    msg = ("The field `/setup/num_polarization_ch` indicates "
+                           "no polarization.\nHowever, the fields "
+                           "`detectors_specs/polarization_ch*` are present.")
+                    raise phc.hdf5.Invalid_PhotonHDF5(msg)
+            else:
+                if any('polarization_ch%i' not in det_specs for i in (1, 2)):
+                    msg = ("The field `/setup/num_polarization_ch` indicates "
+                           "no polarization.\nHowever, the fields "
+                           "`detectors_specs/polarization_ch*` are present.")
+                    raise phc.hdf5.Invalid_PhotonHDF5(msg)
     return meas_type, meas_specs
 
 
@@ -150,6 +167,7 @@ def _load_nanotimes_specs(data, ph_data):
 
 
 def _add_usALEX_specs(data, meas_specs):
+    # Used for both us-ALEX and PAX
     try:
         offset = meas_specs.alex_offset.read()
     except tables.NoSuchNodeError:
@@ -161,7 +179,7 @@ def _add_usALEX_specs(data, meas_specs):
 
 
 def _load_alex_periods_donor_acceptor(data, meas_specs):
-    # Both us- and ns-ALEX
+    # Used for both us- and ns-ALEX and PAX
     try:
         # Try to load alex period definitions
         D_ON = meas_specs.alex_excitation_period1.read()
@@ -183,6 +201,16 @@ def _load_alex_periods_donor_acceptor(data, meas_specs):
         data.add(D_ON=D_ON, A_ON=A_ON)
 
 
+def _selection_mask(arr, values):
+    """Return a bool mask for `arr` selecting items listed in `values`.
+    """
+    values = np.atleast_1d(values)
+    mask = arr == values[0]
+    for v in values[1:]:
+        mask *= arr == v
+    return mask
+
+
 def _compute_acceptor_emission_mask(data, ich, ondisk):
     """For non-ALEX measurements."""
     if data.detectors[ich].dtype.itemsize != 1:
@@ -190,15 +218,17 @@ def _compute_acceptor_emission_mask(data, ich, ondisk):
     donor, accept = data._det_donor_accept_multich[ich]
 
     # Remove counts not associated with D or A channels
-    if not ondisk and len(np.unique(data.detectors[ich])) > 2:
-        mask = (data.detectors[ich] == donor) + (data.detectors[ich] == accept)
+    num_detectors = len(np.unique(data.detectors[ich]))
+    if not ondisk and num_detectors > donor.size + accept.size:
+        mask = (_selection_mask(data.detectors[ich], donor) +
+                _selection_mask(data.detectors[ich], accept))
         data.detectors[ich] = data.detectors[ich][mask]
         data.ph_times_m[ich] = data.ph_times_m[ich][mask]
         if 'nanotimes' in data:
             data.nanotimes[ich] = data.nanotimes[ich][mask]
 
     # From `detectors` compute boolean mask `A_em`
-    if not ondisk and 0 in (accept, donor):
+    if not ondisk and donor.size == 1 and 0 in (accept, donor):
         # In this case we create the boolean mask in-place
         # using the detectors array
         _append_data_ch(data, 'A_em', data.detectors[ich].view(dtype=bool))
@@ -206,7 +236,8 @@ def _compute_acceptor_emission_mask(data, ich, ondisk):
             np.logical_not(data.A_em[ich], out=data.A_em[ich])
     else:
         # Create the boolean mask
-        _append_data_ch(data, 'A_em', data.detectors[ich][:] == accept)
+        _append_data_ch(data, 'A_em',
+                        _selection_mask(data.detectors[ich][:], accept))
 
 
 def _photon_hdf5_1ch(h5data, data, ondisk=False, nch=1, ich=0, loadspecs=True):
@@ -221,40 +252,50 @@ def _photon_hdf5_1ch(h5data, data, ondisk=False, nch=1, ich=0, loadspecs=True):
     # Load photon_data group and measurement_specs (if present)
     ph_data = h5data._f_get_child(ph_data_name)
     meas_type, meas_specs = _get_measurement_specs(ph_data, h5data.setup)
+    # Set some `data` flags
+    data.add(meas_type=meas_type)
+    data.add(ALEX='ALEX' in meas_type)  # True for usALEX, nsALEX and PAX
+    data.add(alternated=data.ALEX or 'PAX' in data.meas_type)
+    data.add(lifetime='nanotimes' in ph_data)
+    data.add(polarization='2pol' in meas_type)
+    data.add(spectral='smFRET-1color' not in meas_type)
 
     # Load photon_data arrays
     _load_photon_data_arrays(data, ph_data, meas_type=meas_type, ondisk=ondisk)
 
     # If nanotimes are present load their specs
-    if 'nanotimes' in ph_data:
+    if data.lifetime:
         _load_nanotimes_specs(data, ph_data)
 
     # Unless 1-color, load donor and acceptor info
-    if meas_type != 'smFRET-1color':
-        donor = np.asscalar(meas_specs.detectors_specs.spectral_ch1.read())
-        accept = np.asscalar(meas_specs.detectors_specs.spectral_ch2.read())
+    det_specs = meas_specs.detectors_specs
+    if data.spectral:
+        donor = np.atleast_1d(det_specs.spectral_ch1.read())
+        accept = np.atleast_1d(det_specs.spectral_ch2.read())
         _append_data_ch(data, 'det_donor_accept', (donor, accept))
-
-    # Here there are all the special-case for each measurement type
-    if meas_type == 'smFRET-1color':
+    else:
         # Non-FRET or unspecified data, assume all photons are "acceptor"
         _append_data_ch(data, 'A_em', slice(None))
 
-    elif meas_type == 'smFRET':
+    if data.polarization:
+        p_pol = np.atleast_1d(det_specs.polarization_ch1.read())
+        s_pol = np.atleast_1d(det_specs.polarization_ch2.read())
+        _append_data_ch(data, 'det_s_p_pol', (p_pol, s_pol))
+
+    # Here there are all the special-case for each measurement type
+    if data.spectral and not data.alternated:
+        # No alternation, we can compute the emission masks right away
         _compute_acceptor_emission_mask(data, ich, ondisk=ondisk)
 
-    elif loadspecs and (meas_type == 'smFRET-usALEX' or 'PAX' in meas_type):
+    if loadspecs and data.spectral and data.alternated and not data.lifetime:
+        # load alternation metadata for usALEX or PAX
         _add_usALEX_specs(data, meas_specs)
 
-    elif loadspecs and meas_type == 'smFRET-nsALEX':
+    if loadspecs and data.lifetime:
         data.add(laser_repetition_rate=meas_specs.laser_repetition_rate.read())
-        _load_alex_periods_donor_acceptor(data, meas_specs)
-
-    # Set some `data` flags
-    data.add(meas_type=meas_type)
-    data.add(ALEX='ALEX' in meas_type)
-    data.add(alternated=data.ALEX or 'PAX' in data.meas_type)
-    data.add(lifetime='nanotimes' in ph_data)
+        if data.ALEX:
+            # load alternation metadata for nsALEX
+            _load_alex_periods_donor_acceptor(data, meas_specs)
 
 
 def _photon_hdf5_multich(h5data, data, ondisk=True):
@@ -373,7 +414,8 @@ def usalex(fname, leakage=0, gamma=1., header=None, BT=None):
               ALEX=True, lifetime=False, alternated=True,
               meas_type='smFRET-usALEX',
               D_ON=DONOR_ON, A_ON=ACCEPT_ON, alex_period=alex_period,
-              ph_times_t=[ph_times_t], det_t=[det_t], det_donor_accept=(0, 1),
+              ph_times_t=[ph_times_t], det_t=[det_t],
+              det_donor_accept=(np.atleast_1d(0), np.atleast_1d(1)),
               ch_labels=labels)
     return dx
 
@@ -390,40 +432,34 @@ def _usalex_apply_period_1ch(d, delete_ph_t=True, remove_d_em_a_ex=False,
     # Remove eventual ch different from donor or acceptor
     det_t = d.det_t[ich][:]
     ph_times_t = d.ph_times_t[ich][:]
-    d_ch_mask_t = (det_t == donor_ch)
-    a_ch_mask_t = (det_t == accept_ch)
-    valid_mask = d_ch_mask_t + a_ch_mask_t
-    ph_times_val = ph_times_t[valid_mask]
-    d_ch_mask_val = d_ch_mask_t[valid_mask]
-    a_ch_mask_val = a_ch_mask_t[valid_mask]
-    assert (d_ch_mask_val + a_ch_mask_val).all()
-    assert not (d_ch_mask_val * a_ch_mask_val).any()
-    if 'offset' in d:
-        ph_times_val -= d.offset
+    d_ch_mask_t = _selection_mask(det_t, donor_ch)
+    a_ch_mask_t = _selection_mask(det_t, accept_ch)
+    valid_det = d_ch_mask_t + a_ch_mask_t
 
     # Build masks for excitation windows
-    d_ex_mask_val = _select_range(ph_times_val, d.alex_period, D_ON)
-    a_ex_mask_val = _select_range(ph_times_val, d.alex_period, A_ON)
+    d_ex_mask_t = _select_range(ph_times_t, d.alex_period, D_ON)
+    a_ex_mask_t = _select_range(ph_times_t, d.alex_period, A_ON)
     # Safety check: each ph is either D or A ex (not both)
-    assert not (d_ex_mask_val * a_ex_mask_val).any()
+    assert not (d_ex_mask_t * a_ex_mask_t).any()
 
-    # Select alternation periods, removing transients
-    DexAex_mask = d_ex_mask_val + a_ex_mask_val
+    # Select alternation periods, removing transients and invalid detectors
+    DexAex_mask = (d_ex_mask_t + a_ex_mask_t) * valid_det
 
-    # Reduce timestamps and masks to the DexAex_mask selection
-    ph_times = ph_times_val[DexAex_mask]
-    d_em = d_ch_mask_val[DexAex_mask]
-    a_em = a_ch_mask_val[DexAex_mask]
-    d_ex = d_ex_mask_val[DexAex_mask]
-    a_ex = a_ex_mask_val[DexAex_mask]
-    assert d_ex.sum() == d_ex_mask_val.sum()
-    assert a_ex.sum() == a_ex_mask_val.sum()
+    # Reduce photons to the DexAex_mask selection
+    ph_times = ph_times_t[DexAex_mask]
+    d_em = d_ch_mask_t[DexAex_mask]
+    a_em = a_ch_mask_t[DexAex_mask]
+    d_ex = d_ex_mask_t[DexAex_mask]
+    a_ex = a_ex_mask_t[DexAex_mask]
+    assert d_ex.sum() == d_ex_mask_t.sum()
+    assert a_ex.sum() == a_ex_mask_t.sum()
+    if 'offset' in d:
+        ph_times -= d.offset
 
     if remove_d_em_a_ex:
         # Removes donor-ch photons during acceptor excitation
         mask = a_em + d_em * d_ex
         assert (mask == -(a_ex * d_em)).all()
-
         ph_times = ph_times[mask]
         d_em = d_em[mask]
         a_em = a_em[mask]
@@ -444,11 +480,18 @@ def _usalex_apply_period_1ch(d, delete_ph_t=True, remove_d_em_a_ex=False,
 
     if 'particles_t' in d:
         particles_t = d.particles_t[ich][:]
-        particles_val = particles_t[valid_mask]
-        particles = particles_val[DexAex_mask]
+        particles = particles_t[DexAex_mask]
         _append_data_ch(d, 'particles', particles)
 
     assert d.ph_times_m[ich].size == d.A_em[ich].size
+
+    if d.polarization:
+        # We also have polarization data
+        p_pol_ch, s_pol_ch = d._det_p_s_pol_multich[ich]
+        p_em, s_em = _get_det_masks(det_t, p_pol_ch, s_pol_ch, DexAex_mask,
+                                    mask_ref=valid_det, ich=ich)
+        _append_data_ch(d, 'P_em', p_em)
+        _append_data_ch(d, 'S_em', s_em)
 
     if delete_ph_t:
         d.delete('ph_times_t')
@@ -521,7 +564,7 @@ def nsalex(fname):
               nanotimes_nbins=nanotimes_nbins,
               nanotimes_params=[{'tcspc_num_bins': nanotimes_nbins}],
               ph_times_t=[ph_times_t], det_t=[det_t], nanotimes_t=[nanotimes],
-              det_donor_accept=(4, 6))
+              det_donor_accept=(np.atleast_1d(4), np.atleast_1d(6)))
     return dx
 
 
@@ -549,12 +592,14 @@ def nsalex_apply_period(d, delete_ph_t=True):
     ich = 0   # we only support single-spot here
     donor_ch, accept_ch = d._det_donor_accept_multich[ich]
     D_ON_multi, A_ON_multi = d._D_ON_multich[ich], d._A_ON_multich[ich]
-    D_ON = [(D_ON_multi[i], D_ON_multi[i+1]) for i in range(0, len(D_ON_multi), 2)]
-    A_ON = [(A_ON_multi[i], A_ON_multi[i+1]) for i in range(0, len(A_ON_multi), 2)]
-
+    D_ON = [(D_ON_multi[i], D_ON_multi[i + 1])
+            for i in range(0, len(D_ON_multi), 2)]
+    A_ON = [(A_ON_multi[i], A_ON_multi[i + 1])
+            for i in range(0, len(A_ON_multi), 2)]
     # Mask for donor + acceptor detectors (discard other detectors)
-    d_ch_mask_t = (d.det_t[ich] == donor_ch)
-    a_ch_mask_t = (d.det_t[ich] == accept_ch)
+    det_t = d.det_t[ich][:]
+    d_ch_mask_t = _selection_mask(det_t, donor_ch)
+    a_ch_mask_t = _selection_mask(det_t, accept_ch)
     da_ch_mask_t = d_ch_mask_t + a_ch_mask_t
 
     # Masks for excitation periods
@@ -569,21 +614,21 @@ def nsalex_apply_period(d, delete_ph_t=True):
     ex_mask_t = d_ex_mask_t + a_ex_mask_t  # Select only ph during Dex or Aex
 
     # Total mask: D+A photons, and only during the excitation periods
-    mask = da_ch_mask_t * ex_mask_t  # logical AND
+    valid = da_ch_mask_t * ex_mask_t  # logical AND
 
     # Apply selection to timestamps and nanotimes
-    ph_times = d.ph_times_t[ich][:][mask]
-    nanotimes = d.nanotimes_t[ich][:][mask]
+    ph_times = d.ph_times_t[ich][:][valid]
+    nanotimes = d.nanotimes_t[ich][:][valid]
 
     # Apply selection to the emission masks
-    d_em = d_ch_mask_t[mask]
-    a_em = a_ch_mask_t[mask]
+    d_em = d_ch_mask_t[valid]
+    a_em = a_ch_mask_t[valid]
     assert (d_em + a_em).all()       # masks fill the total array
     assert not (d_em * a_em).any()   # no photon is both D and A
 
     # Apply selection to the excitation masks
-    d_ex = d_ex_mask_t[mask]
-    a_ex = a_ex_mask_t[mask]
+    d_ex = d_ex_mask_t[valid]
+    a_ex = a_ex_mask_t[valid]
     assert (d_ex + a_ex).all()
     assert not (d_ex * a_ex).any()
 
@@ -591,10 +636,31 @@ def nsalex_apply_period(d, delete_ph_t=True):
           D_em=[d_em], A_em=[a_em], D_ex=[d_ex], A_ex=[a_ex],
           alternation_applied=True)
 
+    if d.polarization:
+        # We also have polarization data
+        p_polariz_ch, s_polariz_ch = d._det_p_s_pol_multich[ich]
+        p_em, s_em = _get_det_masks(det_t, p_polariz_ch, s_polariz_ch, valid,
+                                    mask_ref=valid, ich=ich)
+        d.add(P_em=[p_em], S_em=[s_em])
+
     if delete_ph_t:
         d.delete('ph_times_t')
         d.delete('det_t')
         d.delete('nanotimes_t')
+
+
+def _get_det_masks(det_t, det_ch1, det_ch2, valid, mask_ref=None, ich=0):
+    ch1_mask_t = _selection_mask(det_t, det_ch1)
+    ch2_mask_t = _selection_mask(det_t, det_ch2)
+    both_ch_mask_t = ch1_mask_t + ch2_mask_t
+    if mask_ref is not None:
+        assert all(both_ch_mask_t == mask_ref)
+    # Apply selection to the polarization masks
+    ch1_mask = ch1_mask_t[valid]
+    ch2_mask = ch2_mask_t[valid]
+    assert (ch1_mask + ch2_mask).all()       # masks fill the total array
+    assert not (ch1_mask * ch2_mask).any()   # no photon is both channels
+    return ch1_mask, ch2_mask
 
 
 def alex_apply_period(d, delete_ph_t=True):
