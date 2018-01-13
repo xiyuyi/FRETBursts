@@ -307,7 +307,7 @@ def _photon_hdf5_multich(h5data, data, ondisk=True):
                          loadspecs=False)
 
 
-def photon_hdf5(filename, ondisk=False, require_setup=True):
+def photon_hdf5(filename, ondisk=False, require_setup=True, validate=False):
     """Load a data file saved in Photon-HDF5 format version 0.3 or higher.
 
     Photon-HDF5 is a format for a wide range of timestamp-based
@@ -323,6 +323,8 @@ def photon_hdf5(filename, ondisk=False, require_setup=True):
             have a setup group or won't be loaded. If False, accept files
             with missing setup group. Use False only for testing or
             DCR files.
+        validate (bool): if True validate the Photon-HDF5 file on loading.
+            If False skip any validation.
 
     Returns:
         :class:`fretbursts.burstlib.Data` object containing the data.
