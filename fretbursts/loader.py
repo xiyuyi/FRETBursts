@@ -114,7 +114,7 @@ def _get_measurement_specs(ph_data, setup):
             meas_type += '-2pol'
         # Check consistency of polarization specs
         if meas_specs is not None:
-            det_specs = meas_specs['detectors_specs']
+            det_specs = meas_specs.detectors_specs
             if setup.num_polarization_ch.read() == 1:
                 if all('polarization_ch%i' in det_specs for i in (1, 2)):
                     msg = ("The field `/setup/num_polarization_ch` indicates "
