@@ -1806,7 +1806,7 @@ class Data(DataContainer):
                     else:
                         ph_i_sel = ph_i[masks[sel][i0:i1]]
 
-                    if ph_i_sel.size > 0:
+                    if ph_i_sel.size > 10:
                         if bg_auto_th:
                             _bg, _ = fun(ph_i_sel, **auto_th_kwargs)
                             th_us[sel][ip] = 1e6 * F_bg / _bg
