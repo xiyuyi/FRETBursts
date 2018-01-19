@@ -1699,7 +1699,7 @@ class Data(DataContainer):
         if nperiods > 1:
             last_period = self.time_max - time_s * (nperiods - 1)
             # Discard last period if smaller than 3% of the bg period
-            if last_period < time_s * 0.03:
+            if last_period < time_s * 0.06:
                 nperiods -= 1
         return int(nperiods)
 
