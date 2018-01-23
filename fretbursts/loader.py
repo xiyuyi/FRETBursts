@@ -445,6 +445,8 @@ def _usalex_apply_period_1ch(d, delete_ph_t=True, remove_d_em_a_ex=False,
     valid_det = d_ch_mask_t + a_ch_mask_t
 
     # Build masks for excitation windows
+    if 'offset' in d:
+        ph_times_t -= d.offset
     d_ex_mask_t = _select_range(ph_times_t, d.alex_period, D_ON)
     a_ex_mask_t = _select_range(ph_times_t, d.alex_period, A_ON)
     # Safety check: each ph is either D or A ex (not both)
@@ -461,8 +463,6 @@ def _usalex_apply_period_1ch(d, delete_ph_t=True, remove_d_em_a_ex=False,
     a_ex = a_ex_mask_t[DexAex_mask]
     assert d_ex.sum() == d_ex_mask_t.sum()
     assert a_ex.sum() == a_ex_mask_t.sum()
-    if 'offset' in d:
-        ph_times -= d.offset
 
     if remove_d_em_a_ex:
         # Removes donor-ch photons during acceptor excitation
