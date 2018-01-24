@@ -218,14 +218,15 @@ def _compute_acceptor_emission_mask(data, ich, ondisk):
     donor, accept = data._det_donor_accept_multich[ich]
 
     # Remove counts not associated with D or A channels
-    num_detectors = len(np.unique(data.detectors[ich]))
+    det_ich = data.detectors[ich][:]  # load the data in case ondisk = True
+    num_detectors = len(np.unique(det_ich))
     if not ondisk and num_detectors > donor.size + accept.size:
-        mask = (_selection_mask(data.detectors[ich], donor) +
-                _selection_mask(data.detectors[ich], accept))
-        data.detectors[ich] = data.detectors[ich][mask]
-        data.ph_times_m[ich] = data.ph_times_m[ich][mask]
+        mask = (_selection_mask(det_ich, donor) +
+                _selection_mask(det_ich, accept))
+        data.detectors[ich] = det_ich[mask]
+        data.ph_times_m[ich] = det_ich[mask]
         if 'nanotimes' in data:
-            data.nanotimes[ich] = data.nanotimes[ich][mask]
+            data.nanotimes[ich] = data.nanotimes[ich][:][mask]
 
     # From `detectors` compute boolean mask `A_em`
     if not ondisk and donor.size == 1 and 0 in (accept, donor):
@@ -235,9 +236,9 @@ def _compute_acceptor_emission_mask(data, ich, ondisk):
         if accept == 0:
             np.logical_not(data.A_em[ich], out=data.A_em[ich])
     else:
-        # Create the boolean mask
+        # Create the boolean mask as a new array
         _append_data_ch(data, 'A_em',
-                        _selection_mask(data.detectors[ich][:], accept))
+                        _selection_mask(det_ich, accept))
 
 
 def _photon_hdf5_1ch(h5data, data, ondisk=False, nch=1, ich=0, loadspecs=True):
