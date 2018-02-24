@@ -1763,6 +1763,10 @@ class Data(DataContainer):
         else:
             th_us = self._get_bg_th_arrays(tail_min_us, nperiods)
 
+        # Note: histogram bins are half-open, e.g. [a, b)
+        bins = ((np.arange(nperiods + 1) * time_s + self.time_min) /
+                self.clk_p)
+
         Lim, Ph_p = [], []
         BG, BG_err = [], []
         Th_us = []
@@ -1770,13 +1774,17 @@ class Data(DataContainer):
             masks = {sel: self.get_ph_mask(ich, ph_sel=sel)
                      for sel in self.ph_streams}
 
-            bins = ((np.arange(nperiods + 1) * time_s + self.time_min) /
-                    self.clk_p)
-            # Note: histogram bins are half-open, e.g. [a, b)
             counts, _ = np.histogram(ph_ch, bins=bins)
             lim, ph_p = [], []
             bg = {sel: np.zeros(nperiods) for sel in self.ph_streams}
             bg_err = {sel: np.zeros(nperiods) for sel in self.ph_streams}
+            if ph_ch.size == 0:
+                Lim.append(lim)
+                Ph_p.append(ph_p)
+                BG.append(bg)
+                BG_err.append(bg_err)
+                Th_us.append(th_us)
+                break
             i1 = 0
             for ip in range(nperiods):
                 i0 = i1
