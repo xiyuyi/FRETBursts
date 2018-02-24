@@ -655,8 +655,8 @@ class BurstsGap(Bursts):
 
     def __iter__(self):
         for bdata in self.data:
-           yield BurstGap(bdata[0], bdata[1], bdata[2], bdata[3],
-                          bdata[4], bdata[5])
+            yield BurstGap(bdata[0], bdata[1], bdata[2], bdata[3],
+                           bdata[4], bdata[5])
 
     @property
     def gap(self):
