@@ -1784,7 +1784,7 @@ class Data(DataContainer):
                 BG.append(bg)
                 BG_err.append(bg_err)
                 Th_us.append(th_us)
-                break
+                continue
             i1 = 0
             for ip in range(nperiods):
                 i0 = i1
