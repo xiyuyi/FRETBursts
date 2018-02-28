@@ -1837,6 +1837,14 @@ class Data(DataContainer):
             BG_err_dol[sel] = [err_ch[sel] for err_ch in BG_err]
             Th_us_dol[sel] = [th_ch[sel] for th_ch in Th_us]
 
+        # Fill Lim and Ph_p with zeros for empty channels
+        # This is needed for bg_calc_cache to be able to save data to disk
+        for i, (lim, ph_p) in enumerate(zip(Lim, Ph_p)):
+            if len(lim) == 0:
+                assert len(ph_p) == 0
+                Lim[i] = [(0, 0)] * nperiods
+                Ph_p[i] = [(0, 0)] * nperiods
+
         self.add(bg=BG_dol, bg_err=BG_err_dol, bg_th_us=Th_us_dol,
                  Lim=Lim, Ph_p=Ph_p,
                  bg_fun=fun, bg_fun_name=fun.__name__,
