@@ -10,11 +10,13 @@ before_install:
     - chmod +x miniconda.sh
     - ./miniconda.sh -b
     - export PATH=/home/travis/miniconda3/bin:$PATH
-    - conda config --add channels conda-forge
 
 install:
-    - conda install --yes python=$TRAVIS_PYTHON_VERSION pip scipy pandas matplotlib lmfit cython numba phconvert pytest nbconvert ipykernel ipywidgets
-    - pip install seaborn
+    - conda create -n conda_test_env --yes python=$TRAVIS_PYTHON_VERSION
+    - source activate conda_test_env
+    - conda install --yes scipy pandas matplotlib cython numba pytest nbconvert ipykernel ipywidgets seaborn
+    - conda config --append channels conda-forge
+    - conda install --yes lmfit phconvert
     - if [[ $TRAVIS_PYTHON_VERSION == '2.7' ]]; then pip install pathlib ; fi
     - if [[ $TRAVIS_PYTHON_VERSION != '2.7' ]]; then pip install pybroom ; fi
     - python setup.py build
