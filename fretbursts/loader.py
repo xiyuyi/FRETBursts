@@ -717,3 +717,19 @@ def alex_apply_period(d, delete_ph_t=True):
     D_ex_sum = sum(d_ex.sum() for d_ex in d.D_ex)
     A_ex_sum = sum(a_ex.sum() for a_ex in d.A_ex)
     print(msg.format(ph_data_size, D_em_sum, A_em_sum, D_ex_sum, A_ex_sum))
+
+
+def sm_single_laser(fname):
+    """Load SM files acquired using single-laser and 2 detectors.
+    """
+    print(" - Loading '%s' ... " % fname)
+    ph_times_t, det_t, labels = load_sm(fname, return_labels=True)
+    print(" [DONE]\n")
+
+    a_em = (det_t == 1)
+    dx = Data(fname=fname, clk_p=12.5e-9, nch=1,
+              ALEX=False, lifetime=False, alternated=False,
+              meas_type='smFRET',
+              ph_times_m=[ph_times_t], det_donor_accept=(0, 1), A_em=[a_em],
+              ch_labels=labels)
+    return dx
