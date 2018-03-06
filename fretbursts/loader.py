@@ -732,4 +732,5 @@ def sm_single_laser(fname):
               meas_type='smFRET',
               ph_times_m=[ph_times_t], det_donor_accept=(0, 1), A_em=[a_em],
               ch_labels=labels)
+    dx.add(acquisition_duration=np.round(dx.time_max - dx.time_min, 1))
     return dx
