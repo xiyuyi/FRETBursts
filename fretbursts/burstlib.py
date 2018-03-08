@@ -177,8 +177,10 @@ def iter_bursts_ph(ph_data, bursts, mask=None, compact=False,
             period is required and the timestamps are "compacted" by
             removing the "gaps" between each excitation period.
         alex_period (scalar): period of alternation in timestamp units.
+            Used only when compact is True to "compact" the timestamps.
         excitation_width (float): fraction of `alex_period` covered by
-            current photon selection.
+            current photon selection. Used only when compact is True to
+            "compact" the timestamps.
 
     Yields an array with a selection of "photons" for each burst.
     """
@@ -962,11 +964,11 @@ class Data(DataContainer):
         return ph_times_period
 
     def _assert_compact(self, ph_sel):
-        msg = ('Option compact=True requires a photon selection \n'
-               'from a single excitation period (either Dex or Aex).')
         if not self.alternated:
             raise ValueError('Option compact=True requires ALEX data.')
         if ph_sel.Dex is not None and ph_sel.Aex is not None:
+            msg = ('Option compact=True requires a photon selection \n'
+                   'from a single excitation period (either Dex or Aex).')
             raise ValueError(msg)
 
     def _excitation_width(self, ph_sel, ich=0):
@@ -2784,10 +2786,9 @@ class Data(DataContainer):
             self._assert_compact(ph_sel)
 
         kwargs = dict(func=func, func_kw=func_kw, compact=compact)
-        if self.alternated:
-            kwargs.update(alex_period=self.alex_period)
         if compact:
-            kwargs.update(excitation_width=self._excitation_width(ph_sel))
+            kwargs.update(alex_period=self.alex_period,
+                          excitation_width=self._excitation_width(ph_sel))
 
         results_mch = [burst_ph_stats(ph, bursts, mask=mask, **kwargs)
                        for ph, mask, bursts in
