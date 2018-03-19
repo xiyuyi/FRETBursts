@@ -86,22 +86,31 @@ def _get_measurement_specs(ph_data, setup):
                          'smFRET-usALEX', 'smFRET-nsALEX', 'generic']:
         raise NotImplementedError('Measurement type "%s" not supported'
                                   ' by FRETBursts.' % meas_type)
+    num_spectral_ch = setup.num_spectral_ch.read()
+    num_polarization_ch = setup.num_polarization_ch.read()
+    num_split_ch = setup.num_split_ch.read()
     if meas_type == 'generic':
         msg = ('This file contains {n} {type} channels.\n'
                'Unfortunately, the current FRETBursts version only supports\n'
                '{nvalid} {type} channel.')
-        if setup.num_polarization_ch.read() > 2:
-            raise ValueError(msg.format(n=setup.num_polarization_ch.read(),
+        if num_polarization_ch > 2:
+            raise ValueError(msg.format(n=num_polarization_ch,
                                         type='polarization', nvalid='1 or 2'))
-        if setup.num_split_ch.read() != 1:
-            raise ValueError(msg.format(n=setup.num_split_ch.read(),
-                                        type='split', nvalid=1))
-        if setup.num_spectral_ch.read() > 2:
-            raise ValueError(msg.format(n=setup.num_spectral_ch.read(),
+        if num_spectral_ch > 2:
+            raise ValueError(msg.format(n=num_spectral_ch,
                                         type='spectral', nvalid='1 or 2'))
-        if setup.num_spectral_ch.read() == 1:
+        if num_split_ch == 2 and num_spectral_ch == 1:
+            # in this case data will be loaded as "spectral".
+            pass
+        elif num_split_ch != 1:
+            raise ValueError(msg.format(n=setup.num_split_ch, type='split',
+                                        nvalid=1))
+
+        if num_spectral_ch == 1 and num_split_ch == 1:
+            # One laser one detector
             meas_type = 'smFRET-1color'
         elif not setup.modulated_excitation.read():
+            # Single laser and two spectral (or split) detection channels
             meas_type = 'smFRET'
         elif tuple(setup.excitation_alternated.read()) == (False, True):
             meas_type = 'PAX'
