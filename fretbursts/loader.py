@@ -130,14 +130,14 @@ def _get_measurement_specs(ph_data, setup):
     return meas_type, meas_specs
 
 
-def _load_photon_data_arrays(data, ph_data, meas_type, ondisk=False):
+def _load_photon_data_arrays(data, ph_data, ondisk=False):
     assert 'timestamps' in ph_data
 
     # Build mapping to convert Photon-HDF5 to FRETBursts names
     # fields not mapped use the same name on both Photon-HDF5 and FRETBursts
     mapping = {'timestamps': 'ph_times_m',
                'nanotimes': 'nanotimes', 'particles': 'particles'}
-    if 'ALEX' in meas_type or 'PAX' in meas_type:
+    if data.alternated:
         mapping = {'timestamps': 'ph_times_t', 'detectors': 'det_t',
                    'nanotimes': 'nanotimes_t', 'particles': 'particles_t'}
 
@@ -262,7 +262,7 @@ def _photon_hdf5_1ch(h5data, data, ondisk=False, nch=1, ich=0, loadspecs=True):
     data.add(spectral='smFRET-1color' not in meas_type)
 
     # Load photon_data arrays
-    _load_photon_data_arrays(data, ph_data, meas_type=meas_type, ondisk=ondisk)
+    _load_photon_data_arrays(data, ph_data, ondisk=ondisk)
 
     # If nanotimes are present load their specs
     if data.lifetime:
