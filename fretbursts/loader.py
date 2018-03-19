@@ -124,8 +124,9 @@ def _get_measurement_specs(ph_data, setup):
             else:
                 if any('polarization_ch%i' not in det_specs for i in (1, 2)):
                     msg = ("The field `/setup/num_polarization_ch` indicates "
-                           "no polarization.\nHowever, the fields "
-                           "`detectors_specs/polarization_ch*` are present.")
+                           "more than one polarization.\nHowever, some "
+                           "`detectors_specs/polarization_ch*` fields are "
+                           "missing.")
                     raise phc.hdf5.Invalid_PhotonHDF5(msg)
     return meas_type, meas_specs
 
