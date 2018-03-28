@@ -52,6 +52,7 @@ import numpy as np
 from scipy.stats import erlang
 from scipy.optimize import leastsq
 import pandas as pd
+from pandas.api.types import CategoricalDtype
 import tables
 
 from .ph_sel import Ph_sel
@@ -395,6 +396,64 @@ def burst_data(dx, include_bg=False, include_ph_index=False,
     else:
         bursts = bursts[0]
     return bursts
+
+
+def burst_photons(dx, skip_ch=None):
+    """Return a table (`pd.DataFrame`) of photon data for bursts in `dx`.
+
+    The returned DataFrame has a hierachical index made of two integers:
+    (burst_id, photon_id). `burst_id` identifies the burst
+    while `photon_id` identifies each photon in a burst.
+    `burst_id` is the same number used in as index in the `DataFrame`
+    returned by :func:`burst_data`.
+    `photon_id` always starts at 0 for the first photon in each burst.
+    The columns include:
+
+    - *timstamp*: the timestamp of each photon
+    - *nantotime*: the TCSPC nanotime of each photon (if available)
+    - *stream*: a categorical column indicating the stream of each photon.
+    - *spot*: (multispot only) the spot number for each photon
+
+    Arguments:
+        dx (Data): the Data object containing the measurement
+        skip_ch (list or None): List of channels to skip if measurement is
+            multispot. Default None
+
+    Return:
+        A pandas's DataFrame containing the photon data for the bursts in
+        `dx`. The DataFrame has one row per photon.
+    """
+    assert dx.nch == 1, 'Multispot photon-data export not implemented yet.'
+    ich = 0
+    stream_map = {0: 'DexDem', 1: 'DexAem', 2: 'AexDem', 3: 'AemAem'}
+    stream_dtype = CategoricalDtype(categories=stream_map.values())
+    if dx.alternated:
+        stream = (dx.A_ex[ich].view('int8') << 1) + dx.A_em[ich].view('int8')
+    else:
+        stream = dx.A_em[ich].view('int8')
+    times_arr = np.hstack(
+        burstlib.iter_bursts_ph(dx.ph_times_m[ich], dx.mburst[ich]))
+    stream_arr = np.hstack(
+        burstlib.iter_bursts_ph(stream, dx.mburst[ich]))
+
+    burst_id, ph_id = [], []
+    for i, arr in enumerate(burstlib.iter_bursts_ph(stream, dx.mburst[ich])):
+        burst_id.append(np.repeat(i, arr.size))
+        ph_id.append(np.arange(arr.size))
+    burst_id = np.hstack(burst_id)
+    ph_id = np.hstack(ph_id)
+
+    bph = {'timestamp': times_arr, 'stream': stream_arr}
+    columns = ['timestamp', 'stream']
+    if dx.lifetime:
+        nanot_arr = np.hstack(
+            burstlib.iter_bursts_ph(dx.nanotimes[ich], dx.mburst[ich]))
+        bph['nanotime'] = nanot_arr
+        columns = ['timestamp', 'nanotime', 'stream']
+    burstph = pd.DataFrame(bph, index=[burst_id, ph_id], columns=columns)
+    burstph.index.names = ['burst', 'ph']
+    burstph.stream = burstph.stream.map(stream_map).astype(stream_dtype)
+    return burstph
 
 
 def fit_bursts_kde_peak(dx, burst_data='E', bandwidth=0.03, weights=None,
