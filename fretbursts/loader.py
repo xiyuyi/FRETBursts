@@ -101,7 +101,7 @@ def _get_measurement_specs(ph_data, setup):
                                         type='spectral', nvalid='1 or 2'))
         if num_split_ch == 2 and num_spectral_ch == 1:
             # in this case data will be loaded as "spectral".
-            pass
+            log.warning('Loading split channels as spectral channels.')
         elif num_split_ch != 1:
             raise ValueError(msg.format(n=setup.num_split_ch, type='split',
                                         nvalid=1))
