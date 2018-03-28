@@ -281,8 +281,12 @@ def _photon_hdf5_1ch(h5data, data, ondisk=False, nch=1, ich=0, loadspecs=True):
     # Unless 1-color, load donor and acceptor info
     det_specs = meas_specs.detectors_specs
     if data.spectral:
-        donor = np.atleast_1d(det_specs.spectral_ch1.read())
-        accept = np.atleast_1d(det_specs.spectral_ch2.read())
+        try:
+            donor = np.atleast_1d(det_specs.spectral_ch1.read())
+            accept = np.atleast_1d(det_specs.spectral_ch2.read())
+        except tables.NoSuchNodeError:
+            donor = np.atleast_1d(det_specs.split_ch1.read())
+            accept = np.atleast_1d(det_specs.split_ch2.read())
         _append_data_ch(data, 'det_donor_accept', (donor, accept))
     else:
         # Non-FRET or unspecified data, assume all photons are "acceptor"
