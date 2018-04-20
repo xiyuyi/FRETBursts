@@ -687,3 +687,10 @@ class BurstsGap(Bursts):
         """Number of photons in each burst, minus the `gap_counts`.
         """
         return self.istop - self.istart + 1 - self.gap_counts
+
+    @property
+    def dataframe(self):
+        """A `pandas.DataFrame` containing burst data, one row per burst.
+        """
+        return pd.DataFrame(self.data,
+                            columns=['istart', 'istop', 'start', 'stop', 'gap', 'gap_counts'])
