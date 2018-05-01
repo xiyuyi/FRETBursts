@@ -425,7 +425,7 @@ def burst_photons(dx, skip_ch=None):
     """
     assert dx.nch == 1, 'Multispot photon-data export not implemented yet.'
     ich = 0
-    stream_map = {0: 'DexDem', 1: 'DexAem', 2: 'AexDem', 3: 'AemAem'}
+    stream_map = {0: 'DexDem', 1: 'DexAem', 2: 'AexDem', 3: 'AexAem'}
     stream_dtype = CategoricalDtype(categories=stream_map.values())
     if dx.alternated:
         stream = (dx.A_ex[ich].view('int8') << 1) + dx.A_em[ich].view('int8')
