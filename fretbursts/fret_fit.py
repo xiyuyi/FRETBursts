@@ -210,7 +210,7 @@ def get_weights(nd, na, weights, naa=0, gamma=1., widths=None):
         weights = nt - nt.min() + 1
     elif weights == 'size2':      # weight = (burst size)^2
         weights = nt**2
-    elif weights == 'sqrt':       # weigth = sqrt(burst size)
+    elif weights == 'sqrt':       # weight = sqrt(burst size)
         weights = np.sqrt(nt)
     elif weights == 'inv_size':   # weight = 1/(burst size)
         weights = 1./(nt)

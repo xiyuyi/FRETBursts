@@ -222,7 +222,7 @@ def two_gaussian_fit_curve(x, y, p0, return_all=False, verbose=False, **kwargs):
     """Fit a 2-gaussian mixture to the (x,y) curve.
     `kwargs` are passed to the leastsq() function.
 
-    If return_all=False then return only the fitted paramaters
+    If return_all=False then return only the fitted parameters
     If return_all=True then the full output of leastsq is returned.
     """
     if kwargs['method'] == 'leastsq':
@@ -264,7 +264,7 @@ def two_gaussian_fit_KDE_curve(s, p0=[0, 0.1, 0.6, 0.1, 0.5], weights=None,
         x_pdf (array): array on which the KDE PDF is evaluated and curve-fitted
         weights (array): optional weigths, same size as `s` (for ex.
             1/sigma^2 ~ nt).
-        debug (bool): if True perfoms more tests and print more info.
+        debug (bool): if True performs more tests and print more info.
 
     Additional kwargs are passed to scipy.stats.gaussian_kde().
 

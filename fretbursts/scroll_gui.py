@@ -182,7 +182,7 @@ class ScrollingToolQT(object):
         self.draw = self.fig.canvas.draw
         # self.draw_idle = self.fig.canvas.draw_idle
 
-        # Retrive the QMainWindow used by current figure and add a toolbar
+        # Retrieve the QMainWindow used by current figure and add a toolbar
         # to host the new widgets
         QMainWin = fig.canvas.parent()
         toolbar = QtGui.QToolBar(QMainWin)

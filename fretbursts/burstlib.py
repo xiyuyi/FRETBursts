@@ -105,7 +105,7 @@ def Sel(d_orig, filter_fun, negate=False, nofret=False, **kwargs):
 # Bursts and Timestamps utilities
 #
 def get_alex_fraction(on_range, alex_period):
-    """Get the fraction of period beween two numbers indicating a range.
+    """Get the fraction of period between two numbers indicating a range.
     """
     assert len(on_range) == 2
     if on_range[0] < on_range[1]:
@@ -377,9 +377,9 @@ def b_fuse(bursts, ms=0, clk_p=12.5e-9):
     # Compute gap and gap_counts
     gap = fused_bursts2.start - fused_bursts1.stop
     gap_counts = fused_bursts2.istart - fused_bursts1.istop - 1  # yes it's -1
-    overlaping = fused_bursts1.istop >= fused_bursts2.istart
-    gap[overlaping] = 0
-    gap_counts[overlaping] = 0
+    overlapping = fused_bursts1.istop >= fused_bursts2.istart
+    gap[overlapping] = 0
+    gap_counts[overlapping] = 0
 
     # Assign the new burst data
     # fused_bursts1 has alredy the right start and istart
@@ -475,7 +475,7 @@ def mask_empty(mask):
         is_slice_empty = (mask.stop == 0)
         return is_slice_empty
     else:
-        # Bolean array
+        # Boolean array
         return not mask.any()
 
 
@@ -2322,7 +2322,7 @@ class Data(DataContainer):
         arbitrary selection rules.
 
         Arguments:
-            filter_fun (fuction): function used for burst selection
+            filter_fun (function): function used for burst selection
             negate (boolean): If True, negates (i.e. take the complementary)
                 of the selection returned by `filter_fun`. Default `False`.
             computefret (boolean): If True (default) recompute donor and
@@ -2360,7 +2360,7 @@ class Data(DataContainer):
         object to a second object. Otherwise use :meth:`Data.select_bursts`.
 
         Arguments:
-            filter_fun (fuction): function used for burst selection
+            filter_fun (function): function used for burst selection
             negate (boolean): If True, negates (i.e. take the complementary)
                 of the selection returned by `filter_fun`. Default `False`.
             return_str: if True return, for each channel, a tuple with

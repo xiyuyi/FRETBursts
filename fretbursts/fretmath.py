@@ -23,7 +23,7 @@ import numpy as np
 # Comple corrections
 #
 def correct_E_gamma_leak_dir(Eraw, gamma=1, leakage=0, dir_ex_t=0):
-    """Compute corrected FRET efficency from proximity ratio `Eraw`.
+    """Compute corrected FRET efficiency from proximity ratio `Eraw`.
 
     For the inverse function see :func:`uncorrect_E_gamma_leak_dir`.
 
@@ -42,8 +42,9 @@ def correct_E_gamma_leak_dir(Eraw, gamma=1, leakage=0, dir_ex_t=0):
     """
     if isinstance(Eraw, (list, tuple)):
         Eraw = np.asarray(Eraw)
-    return (Eraw*(leakage + dir_ex_t*gamma + 1) - leakage - dir_ex_t*gamma) \
-           / (Eraw*(leakage -  gamma + 1) - leakage + gamma)
+    return ((Eraw*(leakage + dir_ex_t*gamma + 1) - leakage - dir_ex_t*gamma)
+            / (Eraw*(leakage - gamma + 1) - leakage + gamma))
+
 
 def uncorrect_E_gamma_leak_dir(E, gamma=1, leakage=0, dir_ex_t=0):
     """Compute proximity ratio from corrected FRET efficiency `E`.
@@ -64,8 +65,8 @@ def uncorrect_E_gamma_leak_dir(E, gamma=1, leakage=0, dir_ex_t=0):
     """
     if isinstance(E, (list, tuple)):
         E = np.asarray(E)
-    return (E*(gamma - leakage) + leakage + dir_ex_t*gamma) \
-           / (E*(gamma - leakage - 1) + leakage + dir_ex_t*gamma + 1)
+    return ((E*(gamma - leakage) + leakage + dir_ex_t*gamma)
+            / (E*(gamma - leakage - 1) + leakage + dir_ex_t*gamma + 1))
 
 
 ##
@@ -86,6 +87,7 @@ def gamma_correct_E(Eraw, gamma):
         Eraw = np.asarray(Eraw)
     return Eraw / (gamma - gamma*Eraw + Eraw)
 
+
 def gamma_uncorrect_E(E, gamma):
     """Reverse gamma correction and return uncorrected FRET.
 
@@ -104,6 +106,7 @@ def leakage_correct_E(Eraw, leakage):
     if isinstance(Eraw, (list, tuple)):
         Eraw = np.asarray(Eraw)
     return (Eraw*(leakage + 1) - leakage) / (Eraw*leakage - leakage + 1)
+
 
 def leakage_uncorrect_E(E, leakage):
     """Reverse leakage correction and return uncorrected FRET.
@@ -129,6 +132,7 @@ def dir_ex_correct_E(Eraw, dir_ex_t):
         Eraw = np.asarray(Eraw)
     return Eraw*(dir_ex_t + 1) - dir_ex_t
 
+
 def dir_ex_uncorrect_E(E, dir_ex_t):
     """Reverse direct excitation correction and return uncorrected FRET.
 
@@ -137,6 +141,7 @@ def dir_ex_uncorrect_E(E, dir_ex_t):
     if isinstance(E, (list, tuple)):
         E = np.asarray(E)
     return (E + dir_ex_t) / (dir_ex_t + 1)
+
 
 def correct_S(Eraw, Sraw, gamma, leakage, dir_ex_t):
     """Correct S values for gamma, leakage and direct excitation.
@@ -150,7 +155,7 @@ def correct_S(Eraw, Sraw, gamma, leakage, dir_ex_t):
         leakage (float): donor emission leakage into the acceptor channel.
         dir_ex_t (float): direct acceptor excitation by donor laser.
             Defined as ``n_dir = dir_ex_t * (na + g nd)``. The dir_ex_t
-            coefficient is the ratio between D and A absorbtion cross-sections
+            coefficient is the ratio between D and A absorption cross-sections
             at the donor-excitation wavelength.
 
     Returns
@@ -164,11 +169,13 @@ def correct_S(Eraw, Sraw, gamma, leakage, dir_ex_t):
             (Eraw*leakage*Sraw - Eraw*Sraw*gamma + Eraw*Sraw - leakage*Sraw -
              Sraw*dir_ex_t + Sraw*gamma - Sraw + dir_ex_t + 1))
 
+
 def uncorrect_S(E_R, S, gamma, L_k, d_dirT):
     """Function used to test :func:`correct_S`."""
     return (S*(d_dirT + 1) /
             (-E_R*L_k*S + E_R*L_k + E_R*S*gamma - E_R*S - E_R*gamma +
              E_R + L_k*S - L_k + S*d_dirT - S*gamma + S + gamma))
+
 
 def test_fretmath():
     """Run a few consistency checks for the correction functions.
@@ -246,6 +253,7 @@ def test_fretmath():
     S_uncorr = uncorrect_S(Ex, S_corr, gamma_, leakage_, dir_ex_t_)
     assert np.allclose(S_uncorr, Sx)
     assert (S_corr.min() > -0.5) and (S_corr.max() < 1.5)
+
 
 if __name__ == '__main__':
     test_fretmath()

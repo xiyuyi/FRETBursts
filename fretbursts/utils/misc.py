@@ -95,7 +95,7 @@ def download_file(url, save_dir='./'):
     The destination dir can be set using `save_dir`
     (Default: the current dir).
     """
-    ## Check if local path already exist
+    # Check if local path already exist
     fname = url.split('/')[-1]
     print('URL:  %s' % url)
     print('File: %s\n ' % fname)
@@ -110,7 +110,7 @@ def download_file(url, save_dir='./'):
     from urllib.request import urlopen, urlretrieve
     from urllib.error import HTTPError, URLError
 
-    ## Check if the URL is valid
+    # Check if the URL is valid
     try:
         urlopen(url)
     except URLError as e:
@@ -119,11 +119,10 @@ def download_file(url, save_dir='./'):
         print('URL not found: ' + url)
         return
 
-    ## Donwload the file
+    # Download the file
     def _report(blocknr, blocksize, size):
         current = blocknr*blocksize/2**20
         sys.stdout.write(
             "\rDownloaded {0:4.1f} / {1:4.1f} MB".format(current, size/2**20))
     mkdir_p(save_dir)
     urlretrieve(url, path, _report)
-

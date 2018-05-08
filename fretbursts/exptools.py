@@ -67,20 +67,21 @@ def estimate_tau(sample, median=False, weights=None):
 
     Arguments:
         sample (array): the exponetially-distributed samples
-        median (bool): if False thes mean estimator is mean(sample). If True
+        median (bool): if False the mean estimator is mean(sample). If True
             uses median(samples)/ln(2) for mean esitmator (more robust).
         weights (array or None): optional array of sample weights.
 
     Returns:
         An estimation of the `tau` parameter (the mean, inverse of rate).
     """
-    if median == False:
+    if median is False:
         fitted_tau = np.average(sample, weights=weights)
     else:
         fitted_tau = weighted_median(sample, weights)/np.log(2)
         if weights is None:
             assert np.allclose(fitted_tau*np.log(2), np.median(sample))
     return fitted_tau
+
 
 def tail_mean(sample, threshold=0, weights=None, median=False,
               return_ci=False):
@@ -111,8 +112,10 @@ def tail_mean(sample, threshold=0, weights=None, median=False,
     else:
         return mean_, num_samples
 
+
 def select_tail(sample_tot, threshold):
     return sample_tot[sample_tot >= threshold] - threshold
+
 
 def zeta_values(sorted_sample, median=False):
     assert (sorted_sample >= 0).all()
@@ -130,6 +133,7 @@ def kolgomorv_stat(zeta):
     D = max(Dplus, Dminus)
     return D
 
+
 def kolgomorv_stat_n(zeta):
     D = kolgomorv_stat(zeta)
     n = zeta.size
@@ -142,8 +146,9 @@ def cramervonmises_stat(zeta):
     n = zeta.size
     i = np.arange(1, n + 1)
     term2 = (2*i - 1)/(2*n)
-    W2 = np.sum((zeta -  term2)**2) + 1/(12*n)
+    W2 = np.sum((zeta - term2)**2) + 1/(12*n)
     return W2
+
 
 def cramervonmises_stat_n(zeta):
     W2 = cramervonmises_stat(zeta)
@@ -157,6 +162,7 @@ def watson_stat(zeta):
     W2 = cramervonmises_stat(zeta)
     U2 = W2 - n*(np.mean(zeta) - 0.5)**2
     return U2
+
 
 def watson_stat_n(zeta):
     U2 = watson_stat(zeta)
@@ -174,6 +180,7 @@ def andersondarling_stat(zeta):
     A2 = -np.sum(f1*(log1 + log2))/n - n
     return A2
 
+
 def andersondarling_stat_n(zeta):
     A2 = andersondarling_stat(zeta)
     n = zeta.size
@@ -187,7 +194,7 @@ def exp_test_stat(sample, threshold, median=False, metric='KS',
 
     Arguments:
         sample (array): supposedly exponential distributed samples.
-        threshold (float): theshold used to leselt the sample "tail",
+        threshold (float): threshold used to leselt the sample "tail",
             i.e. `sample[sample > threshold]`.
         median (bool): if False, estimate the sample mean using the emirical
             mean. If True, the sample mean is estimated using the median.
@@ -231,11 +238,13 @@ def exp_tail_stats(sample, thresholds, metric, asymptotic, median,
         mean_fit[idx], num_samples[idx], mean_ci[idx] = \
             tail_mean(sample, threshold=th,
                       median=median, return_ci=True)
-        if num_samples[idx] == 0: break
+        if num_samples[idx] == 0:
+            break
         stats[idx] = exp_test_stat(sample,
                                    threshold=th, metric=metric,
                                    median=median, asymptotic=asymptotic)
     return mean_fit, mean_ci, num_samples, stats
+
 
 def exp_dist_amplitude(meantau_th, meantau_th_ci, num_samples_th,
                        thresholds, mean_fitrange):

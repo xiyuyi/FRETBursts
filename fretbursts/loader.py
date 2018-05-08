@@ -197,7 +197,7 @@ def _load_alex_periods_donor_acceptor(data, meas_specs):
     except tables.NoSuchNodeError:
         # But if it fails it's OK, those fields are optional
         msg = """
-        The current file lacks the alternation period defintion.
+        The current file lacks the alternation period definition.
         You will need to manually add this info using:
 
           d.add(D_ON=D_ON, A_ON=A_ON)
@@ -416,7 +416,7 @@ def usalex(fname, leakage=0, gamma=1., header=None, BT=None):
 
         loader.alex_apply_period(d)
 
-    Now `d` is ready for futher processing such as background estimation,
+    Now `d` is ready for further processing such as background estimation,
     burst search, etc...
     """
     if BT is not None:
@@ -538,7 +538,7 @@ def usalex_apply_period(d, delete_ph_t=True, remove_d_em_a_ex=False):
 
         loader.alex_apply_period(d)
 
-    Now `d` is ready for futher processing such as background estimation,
+    Now `d` is ready for further processing such as background estimation,
     burst search, etc...
 
     *See also:* :func:`alex_apply_period`.
@@ -573,7 +573,7 @@ def nsalex(fname):
 
         loader.alex_apply_period(d)
 
-    Now `d` is ready for futher processing such as background estimation,
+    Now `d` is ready for further processing such as background estimation,
     burst search, etc...
     """
     ph_times_t, det_t, nanotimes = load_spc(fname)
@@ -607,7 +607,7 @@ def nsalex_apply_period(d, delete_ph_t=True):
 
         loader.alex_apply_period(d)
 
-    Now `d` is ready for futher processing such as background estimation,
+    Now `d` is ready for further processing such as background estimation,
     burst search, etc...
 
     *See also:* :func:`alex_apply_period`.
@@ -704,7 +704,7 @@ def alex_apply_period(d, delete_ph_t=True):
 
         loader.alex_apply_period(d)
 
-    Now `d` is ready for futher processing such as background estimation,
+    Now `d` is ready for further processing such as background estimation,
     burst search, etc...
     """
     if not d.alternated:

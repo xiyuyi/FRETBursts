@@ -772,7 +772,7 @@ def time_ph(d, i=0, num_ph=1e4, ph_istart=0):
 #
 def _bins_array(bins):
     """When `bins` is a 3-element sequence returns an array of bin edges.
-    Otherwise returns the `bins` unchaged.
+    Otherwise returns the `bins` unchanged.
     """
     if np.size(bins) == 3:
         bins = np.arange(*bins)
@@ -1489,7 +1489,7 @@ def hist_interphoton_single(d, i=0, binwidth=1e-4, tmax=None, bins=None,
         _plot_status['hist_interphoton_single'] = {'autoscale': False}
     plt.xlabel('Inter-photon delays (%s)' % xunit.replace('us', 'μs'))
     plt.ylabel('# Delays')
-    # Return interal variables so that other functions can extend the plot
+    # Return internal variables so that other functions can extend the plot
     return dict(counts=counts, n_trim=n_trim, plot_style_=plot_style_,
                 t_ax=t_ax, scalex=scalex)
 

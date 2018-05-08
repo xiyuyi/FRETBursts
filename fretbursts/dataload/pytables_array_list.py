@@ -51,23 +51,23 @@ class PyTablesList(list):
         self.prefix = prefix
         self.compression = compression
 
-        ## Retrive the file reference file
+        # Retrieve the file reference file
         if type(file) is tables.file.File:
             self.data_file = file
         elif os.path.exists(file) and not overwrite:
-            self.data_file = tables.open_file(file, mode = "a")
+            self.data_file = tables.open_file(file, mode="a")
         else:
-            self.data_file = tables.open_file(file, mode = "w",
-                               title = "Container for lists of arrays")
+            self.data_file = tables.open_file(
+                file, mode="w", title="Container for lists of arrays")
 
-        ## Create the group if not existent
+        # Create the group if not existent
         if group_name not in self.data_file.get_node(parent_node):
             self.data_file.create_group(parent_node, group_name,
                                         title=group_descr)
         self.group = self.data_file.get_node(parent_node, group_name)
 
         if 'size' in self.group._v_attrs:
-            ## If the group was already present read the data
+            # If the group was already present read the data
             self.size = self.group._v_attrs.size
             self.prefix = self.group._v_attrs.prefix
             for i in range(self.group._v_attrs.size):
@@ -76,7 +76,7 @@ class PyTablesList(list):
                     array_ = array_[:]
                 super(PyTablesList, self).append(array_)
         else:
-            ## If a new group save some metadata
+            # If a new group save some metadata
             self.group._v_attrs.size = self.size
             self.group._v_attrs.prefix = self.prefix
             self.group._v_attrs.load_array = self.load_array

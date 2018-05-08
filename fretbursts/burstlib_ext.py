@@ -401,7 +401,7 @@ def burst_data(dx, include_bg=False, include_ph_index=False,
 def burst_photons(dx, skip_ch=None):
     """Return a table (`pd.DataFrame`) of photon data for bursts in `dx`.
 
-    The returned DataFrame has a hierachical index made of two integers:
+    The returned DataFrame has a hierarchical index made of two integers:
     (burst_id, photon_id). `burst_id` identifies the burst
     while `photon_id` identifies each photon in a burst.
     `burst_id` is the same number used in as index in the `DataFrame`
@@ -409,7 +409,7 @@ def burst_photons(dx, skip_ch=None):
     `photon_id` always starts at 0 for the first photon in each burst.
     The columns include:
 
-    - *timstamp*: the timestamp of each photon
+    - *timestamp*: the timestamp of each photon
     - *nantotime*: the TCSPC nanotime of each photon (if available)
     - *stream*: a categorical column indicating the stream of each photon.
     - *spot*: (multispot only) the spot number for each photon
@@ -741,7 +741,7 @@ def join_data(d_list, gap=0):
     Returns:
         A `Data` object containing bursts from the all the objects in `d_list`.
         This object will not contain timestamps, therefore it is possible
-        to perform burst selections but not a new burst serach.
+        to perform burst selections but not a new burst search.
 
     Example:
         If `d1` and `d2` are two measurements to concatenate::

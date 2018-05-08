@@ -75,12 +75,12 @@ def run_notebook(notebook_path, nb_kwargs=None, suffix='-out',
         suffix (string): suffix to append to the file name of the executed
             notebook. Argument ignored if `out_notebook_path` is not None.
         out_path_ipynb (pathlib.Path, string or None): file name for the
-            output ipynb notebook. If None, the ouput ipynb notebook has
+            output ipynb notebook. If None, the output ipynb notebook has
             the same name as the input notebook plus a suffix, specified
             by the `suffix` argument. If not None, `suffix` is ignored.
             If argument `save_ipynb` is False this argument is ignored.
         out_path_html (pathlib.Path, string or None): file name for the
-            output HTML notebook. If None, the ouput HTML notebook has
+            output HTML notebook. If None, the output HTML notebook has
             the same name as the input notebook plus a suffix, specified
             by the `suffix` argument. If not None, `suffix` is ignored.
             If argument `save_html` is False this argument is ignored.

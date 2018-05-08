@@ -13,7 +13,7 @@ Background cache implementation
 Background caching only works when `bg_fun = bg.exp_fit` (MLE tail fit) and
 assumes that `bg_ph_sel == Ph_sel('all')`.
 
-Background estimation results are indentified by the `Data.calc_bg` arguments::
+Background estimation results are identified by the `Data.calc_bg` arguments::
 
     time_s, tail_min_us, F_bg, error_metrics, fit_allph
 

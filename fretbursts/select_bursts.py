@@ -301,7 +301,7 @@ def topN_max_rate(d, ich=0, N=500):
     return burst_mask, 'topN_MaxRate%d' % N
 
 def topN_sbr(d, ich=0, N=200):
-    """Select the top `N` bursts with hightest SBR."""
+    """Select the top `N` bursts with highest SBR."""
     if 'sbr' not in d:
         d.calc_sbr()
     sbr_ich = d.sbr[ich]

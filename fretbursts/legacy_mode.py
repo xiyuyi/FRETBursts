@@ -31,7 +31,7 @@ __init__.py for details).
 The old behaviour was loading a big chunk of matplotlib.pyplot and
 a lot of functions from burstlib.
 
-Now the prefered way is to use always `plt.` to access the matplotlib.pyplot
+Now the preferred way is to use always `plt.` to access the matplotlib.pyplot
 functions and `bl.` to access any function in `burstlib`. This change makes
 maintenance, unit testing and installation easier.
 
