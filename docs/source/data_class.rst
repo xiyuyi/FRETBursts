@@ -161,13 +161,15 @@ with generic models is now handled with the new
     .. automethod:: fit_E_two_gauss_EM
 
 
-Data access methods
--------------------
+Timestamp access methods
+------------------------
 
 The following methods are used to access (or iterate over) the arrays of timestamps
 (for different photon streams), timestamps masks and burst data.
 
 - :meth:`Data.get_ph_times`
+- :meth:`ph_in_bursts_ich`
+- :meth:`ph_in_bursts_mask_ich`
 - :meth:`Data.iter_ph_times`
 - :meth:`Data.get_ph_mask`
 - :meth:`Data.iter_ph_masks`
@@ -189,6 +191,10 @@ The methods documentation follows:
     .. automethod:: iter_ph_masks
 
     .. automethod:: iter_bursts_ph
+
+    .. automethod:: ph_in_bursts_ich
+
+    .. automethod:: ph_in_bursts_mask_ich
 
     .. automethod:: expand
 
