@@ -24,6 +24,9 @@ follows.
 * :func:`burst_data` returns a pandas DataFrame with burst data (one burst
   per row). Burst data includes sizes, duration, E, S, etc....
 
+* :func:`burst_photons` returns a pandas DataFrame with photon data such as
+  timestamps or nanotimes inside bursts (one photon per row).
+
 * :func:`bursts_fitter` and :func:`fit_bursts_kde_peak` help to build and
   fit histograms and KDEs for E or S.
 
@@ -38,7 +41,6 @@ follows.
 
 Finally a few functions deal with burst timestamps:
 
-* :func:`get_burst_photons` returns a list of timestamps for each burst.
 * :func:`ph_burst_stats` compute any statistics (for example mean or median)
   on the timestamps of each burst.
 * :func:`asymmetry` returns a burst "asymmetry index" based on the difference
@@ -491,6 +493,7 @@ def fit_bursts_kde_peak(dx, burst_data='E', bandwidth=0.03, weights=None,
         KDE_max_mch = KDE_max_mch[0]
     return KDE_max_mch
 
+
 def bursts_fitter(dx, burst_data='E', save_fitter=True,
                   weights=None, gamma=1, add_naa=False, skip_ch=None,
                   binwidth=None, bandwidth=None, model=None, verbose=False):
@@ -547,6 +550,7 @@ def bursts_fitter(dx, burst_data='E', save_fitter=True,
         setattr(dx, burst_data + '_weights', (weights, float(gamma), add_naa))
     return fitter
 
+
 def _get_bg_distrib_erlang(d, ich=0, m=10, ph_sel=Ph_sel('all'),
                            period=(0, -1)):
     """Return a frozen (scipy) erlang distrib. with rate equal to the bg rate.
@@ -565,13 +569,15 @@ def _get_bg_distrib_erlang(d, ich=0, m=10, ph_sel=Ph_sel('all'),
     bg_dist = erlang(a=m, scale=1./rate_ch_kcps)
     return bg_dist
 
+
 def _get_bg_erlang(d, ich=0, m=10, ph_sel=Ph_sel('all'), period=0):
     """Return a frozen (scipy) erlang distrib. with rate equal to the bg rate.
     """
     bg_rate = d.bg_from(ph_sel=ph_sel)[ich][period]
-    #bg_rate_kcps = bg_rate*1e-3
+    # bg_rate_kcps = bg_rate*1e-3
     bg_dist = erlang(a=m, scale=1./bg_rate)
     return bg_dist
+
 
 def histogram_mdelays(d, ich=0, m=10, ph_sel=Ph_sel('all'),
                       binwidth=1e-3, dt_max=10e-3, bins=None,
@@ -601,6 +607,7 @@ def histogram_mdelays(d, ich=0, m=10, ph_sel=Ph_sel('all'),
     hist = HistData(*np.histogram(ph_mdelays, bins=bins))
     return hist
 
+
 def calc_mdelays_hist(d, ich=0, m=10, period=(0, -1), bins_s=(0, 10, 0.02),
                       ph_sel=Ph_sel('all'), bursts=False, bg_fit=True,
                       bg_F=0.8):
@@ -628,7 +635,8 @@ def calc_mdelays_hist(d, ich=0, m=10, period=(0, -1), bins_s=(0, 10, 0.02),
           bin_x > bg_mean*bg_F. Returned only if `bg_fit` is True.
     """
     assert ph_sel in [Ph_sel('all'), Ph_sel(Dex='Dem'), Ph_sel(Dex='Aem')]
-    if np.size(period) == 1: period = (period, period)
+    if np.size(period) == 1:
+        period = (period, period)
     periods = slice(d.Lim[ich][period[0]][0], d.Lim[ich][period[1]][1] + 1)
     bins = np.arange(*bins_s)
 
@@ -673,18 +681,23 @@ def calc_mdelays_hist(d, ich=0, m=10, period=(0, -1), bins_s=(0, 10, 0.02),
     results.append(bg_dist)
 
     if bg_fit:
-        ## Fitting the BG portion of the PDF to an Erlang
+        # Fitting the BG portion of the PDF to an Erlang
         _x = bin_x[bin_x > bg_mean*bg_F]
         _y = mdelays_hist_y[bin_x > bg_mean*bg_F]
-        fit_func = lambda x, a, rate_kcps: a*erlang.pdf(x, a=m,
-                                                        scale=1./rate_kcps)
-        err_func = lambda p, x, y: fit_func(x, p[0], p[1]) - y
+
+        def fit_func(x, a, rate_kcps):
+            return a * erlang.pdf(x, a=m, scale=1./rate_kcps)
+
+        def err_func(p, x, y):
+            return fit_func(x, p[0], p[1]) - y
+
         p, flag = leastsq(err_func, x0=[0.9, 3.], args=(_x, _y))
         print(p, flag)
         a, rate_kcps = p
         results.extend([a, rate_kcps])
 
     return results
+
 
 def burst_data_period_mean(dx, burst_data):
     """Compute mean `burst_data` in each period.
@@ -705,6 +718,7 @@ def burst_data_period_mean(dx, burst_data):
         for iperiod in range(dx.nperiods):
             mean_burst_data[ich, iperiod] = b_data_ch[period == iperiod].mean()
     return mean_burst_data
+
 
 def join_data(d_list, gap=0):
     """Joins burst data of different measurements in a single `Data` object.
@@ -932,6 +946,9 @@ def burst_search_and_gate(dx, F=6, m=10, min_rate_cps=None, c=-1,
 def get_burst_photons(d, ich=0, ph_sel=Ph_sel('all')):
     """Return a list of arrays of photon timestamps in each burst.
 
+    .. deprecated:: 0.6.5
+        Use :func:`burst_photons` instead.
+
     Arguments:
         d (Data): Data() object
         ich (int): channel index
@@ -956,6 +973,7 @@ def get_burst_photons(d, ich=0, ph_sel=Ph_sel('all')):
                                                       photon_masks)]
     return burst_photons
 
+
 def ph_burst_stats(d, ich=0, func=np.mean, ph_sel=Ph_sel('all')):
     """Applies function `func` to the timestamps of each burst.
 
@@ -974,6 +992,7 @@ def ph_burst_stats(d, ich=0, func=np.mean, ph_sel=Ph_sel('all')):
     burst_photons = get_burst_photons(d, ich, ph_sel=ph_sel)
     stats = [func(times) for times in burst_photons]
     return np.array(stats)
+
 
 def asymmetry(dx, ich=0, func=np.mean, dropnan=True):
     """Compute an asymmetry index for each burst in channel `ich`.
@@ -994,10 +1013,7 @@ def asymmetry(dx, ich=0, func=np.mean, dropnan=True):
     """
     stats_d = ph_burst_stats(dx, ich=ich, func=func, ph_sel=Ph_sel(Dex='Dem'))
     stats_a = ph_burst_stats(dx, ich=ich, func=func, ph_sel=Ph_sel(Dex='Aem'))
-
-    #b_size = d.burst_sizes(ich, add_naa=False)
-    #b_width = d.mburst[ich].width
-    burst_asym = (stats_d - stats_a)*dx.clk_p*1e3
+    burst_asym = (stats_d - stats_a) * dx.clk_p * 1e3
     if dropnan:
         burst_asym = burst_asym[-np.isnan(burst_asym)]
     return burst_asym
