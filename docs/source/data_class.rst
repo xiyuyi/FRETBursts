@@ -168,8 +168,8 @@ The following methods are used to access (or iterate over) the arrays of timesta
 (for different photon streams), timestamps masks and burst data.
 
 - :meth:`Data.get_ph_times`
-- :meth:`ph_in_bursts_ich`
-- :meth:`ph_in_bursts_mask_ich`
+- :meth:`Data.ph_in_bursts_ich`
+- :meth:`Data.ph_in_bursts_mask_ich`
 - :meth:`Data.iter_ph_times`
 - :meth:`Data.get_ph_mask`
 - :meth:`Data.iter_ph_masks`
