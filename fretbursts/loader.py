@@ -392,12 +392,15 @@ def photon_hdf5(filename, ondisk=False, require_setup=True, validate=False):
 def _select_outer_range(times, period, edges):
     return ((times % period) >= edges[0]) + ((times % period) < edges[1])
 
+
 def _select_inner_range(times, period, edges):
     return ((times % period) >= edges[0]) * ((times % period) < edges[1])
+
 
 def _select_range(times, period, edges):
     return _select_inner_range(times, period, edges) if edges[0] < edges[1] \
         else _select_outer_range(times, period, edges)
+
 
 def usalex(fname, leakage=0, gamma=1., header=None, BT=None):
     """Load usALEX data from a SM file and return a Data() object.

@@ -2,7 +2,7 @@
 #
 # FRETBursts - A single-molecule FRET burst analysis toolkit.
 #
-# Copyright (C) 2014-2016 The Regents of the University of California,
+# Copyright (C) 2014-2018 The Regents of the University of California,
 #               Antonino Ingargiola <tritemio@gmail.com>
 #
 """
@@ -20,8 +20,10 @@ from builtins import range, zip
 import numpy as np
 
 ##
-# Comple corrections
+# Complete corrections
 #
+
+
 def correct_E_gamma_leak_dir(Eraw, gamma=1, leakage=0, dir_ex_t=0):
     """Compute corrected FRET efficiency from proximity ratio `Eraw`.
 
@@ -73,11 +75,13 @@ def uncorrect_E_gamma_leak_dir(E, gamma=1, leakage=0, dir_ex_t=0):
 # Single parameter correction
 #
 # NOTE: Applying the single parameter correction one after the other
-#       IS NOT equivalent to applying the comple correction in one step.
-#       In fact chaining the single correction gives mathematically the wrong
+#       IS NOT equivalent to applying the complete correction in one step.
+#       In fact, chaining the single correction gives mathematically the wrong
 #       result, even if it may be in some cases close enough to the
 #       mathematically accurate value.
 #
+
+
 def gamma_correct_E(Eraw, gamma):
     """Apply gamma correction to the uncorrected FRET `Eraw`.
 
