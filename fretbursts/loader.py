@@ -438,7 +438,7 @@ def usalex(fname, leakage=0, gamma=1., header=None, BT=None):
 
     dx = Data(fname=fname, clk_p=12.5e-9, nch=1, leakage=leakage, gamma=gamma,
               ALEX=True, lifetime=False, alternated=True,
-              meas_type='smFRET-usALEX',
+              meas_type='smFRET-usALEX', polarization=False,
               D_ON=DONOR_ON, A_ON=ACCEPT_ON, alex_period=alex_period,
               ph_times_t=[ph_times_t], det_t=[det_t],
               det_donor_accept=(np.atleast_1d(0), np.atleast_1d(1)),
