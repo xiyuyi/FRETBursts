@@ -19,14 +19,14 @@ Loading:
   (`a6b343 <https://github.com/OpenSMFS/FRETBursts/commit/a6b343a0bc8e946cc1b4229a8c12f57bf95e598b>`__)
 - Add support for loading polarization and split data as "spectral"
   (`a5b7d6 <https://github.com/OpenSMFS/FRETBursts/commit/a5b7d61f5d53ce65f3b9d9d9e8a50e891a968abf>`__,
-   `c73188 <https://github.com/OpenSMFS/FRETBursts/commit/c731881ee25d287835ef9f3a3459740b2e62e6d5>`__)
+  `c73188 <https://github.com/OpenSMFS/FRETBursts/commit/c731881ee25d287835ef9f3a3459740b2e62e6d5>`__)
 
 Analysis:
 
 - Background computation improvements: more robust, faster, better error messages
   (`4fbf33 <https://github.com/OpenSMFS/FRETBursts/commit/4fbf333e148df4663890277af1475f82400c83d5>`__,
-   `7a3c17 <https://github.com/OpenSMFS/FRETBursts/commit/7a3c17d450c9010f4ef0faf4c774a3d4fca85367>`__,
-   `5a68d0 <https://github.com/OpenSMFS/FRETBursts/commit/5a68d096fa6b61dd4dec7ffb4437d68a9f77869d>`__,)
+  `7a3c17 <https://github.com/OpenSMFS/FRETBursts/commit/7a3c17d450c9010f4ef0faf4c774a3d4fca85367>`__,
+  `5a68d0 <https://github.com/OpenSMFS/FRETBursts/commit/5a68d096fa6b61dd4dec7ffb4437d68a9f77869d>`__,)
 
 Other:
 

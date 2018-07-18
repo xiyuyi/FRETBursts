@@ -10,6 +10,12 @@ FRETBursts
 Latest News
 -----------
 
+#### Latest release 0.7 (2017-07-18)
+
+For updates on the latest FRETBursts release see
+[release notes](http://fretbursts.readthedocs.io/en/latest/releasenotes.html).
+
+
 #### 2017-11-20 - Migration to OpenSMFS Organization
 
 We moved the FRETBursts repository on GitHub to the [OpenSMFS organization](https://github.com/OpenSMFS).
@@ -22,11 +28,6 @@ The new FRETBursts repository URL is [github.com/OpenSMFS/FRETBursts](https://gi
 FRETBursts "landing page" is now [opensmfs.github.io/FRETBursts/](https://opensmfs.github.io/FRETBursts/).
 FRETBursts Documentation is hosted on ReadTheDocs and did not change URL.
 CI services have been migrated. [Open issues](https://github.com/OpenSMFS/FRETBursts/issues) will be migrated soon.
-
-#### Latest release 0.6.5 (2017-08-25)
-
-For updates on the latest FRETBursts release see
-[release notes](http://fretbursts.readthedocs.io/en/latest/releasenotes.html).
 
 #### 2016-08-17
 Our software paper describing FRETBursts has been peer-reviewed and published by PLOS ONE:

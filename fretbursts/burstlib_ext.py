@@ -413,7 +413,7 @@ def burst_photons(dx, skip_ch=None):
     The returned DataFrame has a hierarchical index made of two integers:
     (burst_id, photon_id). `burst_id` identifies the burst
     while `photon_id` identifies each photon in a burst.
-    `burst_id` is the same number used in as index in the `DataFrame`
+    `burst_id` is the same number used as index in the `DataFrame`
     returned by :func:`burst_data`.
     `photon_id` always starts at 0 for the first photon in each burst.
 
