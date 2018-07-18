@@ -1,6 +1,39 @@
 FRETBursts Release Notes
 ========================
 
+Version 0.7 (Jul. 2018) (unreleased)
+------------------------------------
+
+Exporting:
+
+- Export photon burst data to pandas DataFrame (function `bext.burst_photons <https://fretbursts.readthedocs.io/en/latest/plugins.html?highlight=burst_photons#fretbursts.burstlib_ext.burst_photons>`__)
+
+Loading:
+
+- Support for Photon-HDF5 0.5 and validation during loading
+- Add function to load SM files acquired with 1-laser
+  (`96d39b <https://github.com/OpenSMFS/FRETBursts/commit/96d39bb9c53c3a1f8dbf190410c2b1bad092f875>`__)
+- Support smFRET-1color measurements from "generic" Photon-HDF5
+  (`ab87e8 <https://github.com/OpenSMFS/FRETBursts/commit/ab87e8108e16ce6440fd57224e62b2ba96cc14a2>`__)
+- Faster loading of nsALEX data when `ondisk=True`
+  (`a6b343 <https://github.com/OpenSMFS/FRETBursts/commit/a6b343a0bc8e946cc1b4229a8c12f57bf95e598b>`__)
+- Add support for loading polarization and split data as "spectral"
+  (`a5b7d6 <https://github.com/OpenSMFS/FRETBursts/commit/a5b7d61f5d53ce65f3b9d9d9e8a50e891a968abf>`__,
+   `c73188 <https://github.com/OpenSMFS/FRETBursts/commit/c731881ee25d287835ef9f3a3459740b2e62e6d5>`__)
+
+Analysis:
+
+- Background computation improvements: more robust, faster, better error messages
+  (`4fbf33 <https://github.com/OpenSMFS/FRETBursts/commit/4fbf333e148df4663890277af1475f82400c83d5>`__,
+   `7a3c17 <https://github.com/OpenSMFS/FRETBursts/commit/7a3c17d450c9010f4ef0faf4c774a3d4fca85367>`__,
+   `5a68d0 <https://github.com/OpenSMFS/FRETBursts/commit/5a68d096fa6b61dd4dec7ffb4437d68a9f77869d>`__,)
+
+Other:
+
+- New documentation theme (docs live at the same address `fretbursts.readthedocs.io <https://fretbursts.readthedocs.io>`__)
+- A myriad of small improvements and bug and regression fixes (see git log for details)
+
+
 Version 0.6.5 (Aug. 2017)
 -------------------------
 .. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.848292.svg
@@ -33,6 +66,7 @@ Other changes:
     - `Example - Plotting timetraces with bursts <https://github.com/OpenSMFS/FRETBursts/blob/master/notebooks/Example%20-%20Plotting%20timetraces%20with%20bursts.ipynb>`__
     - `Example - Selecting FRET populations <https://github.com/OpenSMFS/FRETBursts/blob/master/notebooks/Example%20-%20Selecting%20FRET%20populations.ipynb>`__
     - `Example - FRET histogram fitting <https://github.com/OpenSMFS/FRETBursts/blob/master/notebooks/Example%20-%20FRET%20histogram%20fitting.ipynb>`__
+
 
 Version 0.6.4 (Jul. 2017)
 --------------------------
