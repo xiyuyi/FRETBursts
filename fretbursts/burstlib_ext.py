@@ -401,7 +401,14 @@ def burst_data(dx, include_bg=False, include_ph_index=False,
 
 
 def burst_photons(dx, skip_ch=None):
-    """Return a table (`pd.DataFrame`) of photon data for bursts in `dx`.
+    """Return a `pandas.DataFrame` of photon-data for bursts in `dx`.
+
+    The returned DataFrame has one row per "photon". Columns include:
+
+    - *timestamp*: the timestamp of each photon
+    - *nantotime*: the TCSPC nanotime of each photon (if available)
+    - *stream*: a categorical column indicating the stream of each photon.
+    - *spot*: (multispot only) the spot number for each photon
 
     The returned DataFrame has a hierarchical index made of two integers:
     (burst_id, photon_id). `burst_id` identifies the burst
@@ -409,12 +416,6 @@ def burst_photons(dx, skip_ch=None):
     `burst_id` is the same number used in as index in the `DataFrame`
     returned by :func:`burst_data`.
     `photon_id` always starts at 0 for the first photon in each burst.
-    The columns include:
-
-    - *timestamp*: the timestamp of each photon
-    - *nantotime*: the TCSPC nanotime of each photon (if available)
-    - *stream*: a categorical column indicating the stream of each photon.
-    - *spot*: (multispot only) the spot number for each photon
 
     Arguments:
         dx (Data): the Data object containing the measurement
