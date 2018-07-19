@@ -1,8 +1,8 @@
 FRETBursts Release Notes
 ========================
 
-Version 0.7 (Jul. 2018) (unreleased)
-------------------------------------
+Version 0.7 (Jul. 2018)
+-----------------------
 
 Exporting:
 
