@@ -1,8 +1,20 @@
 FRETBursts Release Notes
 ========================
 
+Version 0.7.1 (unreleased)
+-------------------------
+
+- Fix error loading Photon-HDF5 files with polarization data
+  (`issue <https://github.com/OpenSMFS/FRETBursts/issues/18>`__)
+
+
 Version 0.7 (Jul. 2018)
 -----------------------
+
+To update to the latest FRETBursts version type `conda install fretbursts -c conda-forge`.
+For more detailed instructions see :doc:`Getting Started <getting_started>`.
+
+
 
 Exporting:
 
