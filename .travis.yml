@@ -18,6 +18,7 @@ install:
     - conda config --append channels conda-forge
     - conda install --yes lmfit phconvert
     - if [[ $TRAVIS_PYTHON_VERSION == '2.7' ]]; then pip install pathlib ; fi
+    - if [[ $TRAVIS_PYTHON_VERSION == '2.7' ]]; then conda install phconvert<0.9; fi
     - if [[ $TRAVIS_PYTHON_VERSION != '2.7' ]]; then pip install pybroom ; fi
     - python setup.py build
     - pip install .

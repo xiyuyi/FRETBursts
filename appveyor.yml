@@ -30,6 +30,7 @@ install:
   - activate test-environment
   - python -m pip install --upgrade pip
   - ps: 'if($env:PYTHON_VERSION -eq "2.7"){pip install pathlib}'
+  - ps: 'if($env:PYTHON_VERSION -eq "2.7"){conda install phconvert<0.9}'
   - ps: 'if($env:PYTHON_VERSION -ne "2.7"){pip install pybroom}'
   - python --version
   - cd %APPVEYOR_BUILD_FOLDER%
