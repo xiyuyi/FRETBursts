@@ -18,9 +18,10 @@ install:
     - source activate conda_test_env
     - conda install --yes scipy pandas matplotlib cython numba pytest nbconvert ipykernel ipywidgets seaborn
     - conda config --append channels conda-forge
-    - conda install --yes lmfit phconvert
+    - conda install --yes lmfit
     - if [[ $TRAVIS_PYTHON_VERSION == '2.7' ]]; then pip install pathlib ; fi
-    - if [[ $TRAVIS_PYTHON_VERSION == '2.7' ]]; then conda install "phconvert<0.9"; fi
+    - if [[ $TRAVIS_PYTHON_VERSION == '2.7' ]]; then conda install --yes "phconvert<0.9" ; fi
+    - if [[ $TRAVIS_PYTHON_VERSION != '2.7' ]]; then conda install --yes phconvert; fi
     - if [[ $TRAVIS_PYTHON_VERSION != '2.7' ]]; then pip install pybroom ; fi
     - python setup.py build
     - pip install .
