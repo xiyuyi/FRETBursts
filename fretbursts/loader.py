@@ -24,6 +24,7 @@ import tables
 from phconvert.smreader import load_sm
 from .dataload.spcreader import load_spc
 from .burstlib import Data
+from .utils.misc import selection_mask
 from . import loader_legacy
 import phconvert as phc
 
@@ -217,16 +218,6 @@ def _load_alex_periods_donor_acceptor(data, meas_specs):
         data.add(D_ON=D_ON, A_ON=A_ON)
 
 
-def _selection_mask(arr, values):
-    """Return a bool mask for `arr` selecting items listed in `values`.
-    """
-    values = np.atleast_1d(values)
-    mask = arr == values[0]
-    for v in values[1:]:
-        mask *= arr == v
-    return mask
-
-
 def _compute_acceptor_emission_mask(data, ich, ondisk):
     """For non-ALEX measurements."""
     if data.detectors[ich].dtype.itemsize != 1:
@@ -237,8 +228,8 @@ def _compute_acceptor_emission_mask(data, ich, ondisk):
     det_ich = data.detectors[ich][:]  # load the data in case ondisk = True
     num_detectors = len(np.unique(det_ich))
     if not ondisk and num_detectors > donor.size + accept.size:
-        mask = (_selection_mask(det_ich, donor) +
-                _selection_mask(det_ich, accept))
+        mask = (selection_mask(det_ich, donor) +
+                selection_mask(det_ich, accept))
         data.detectors[ich] = det_ich[mask]
         data.ph_times_m[ich] = det_ich[mask]
         if 'nanotimes' in data:
@@ -254,7 +245,7 @@ def _compute_acceptor_emission_mask(data, ich, ondisk):
     else:
         # Create the boolean mask as a new array
         _append_data_ch(data, 'A_em',
-                        _selection_mask(det_ich, accept))
+                        selection_mask(det_ich, accept))
 
 
 def _photon_hdf5_1ch(h5data, data, ondisk=False, nch=1, ich=0, loadspecs=True):
@@ -464,8 +455,8 @@ def _usalex_apply_period_1ch(d, delete_ph_t=True, remove_d_em_a_ex=False,
     # Remove eventual ch different from donor or acceptor
     det_t = d.det_t[ich][:]
     ph_times_t = d.ph_times_t[ich][:]
-    d_ch_mask_t = _selection_mask(det_t, donor_ch)
-    a_ch_mask_t = _selection_mask(det_t, accept_ch)
+    d_ch_mask_t = selection_mask(det_t, donor_ch)
+    a_ch_mask_t = selection_mask(det_t, accept_ch)
     valid_det = d_ch_mask_t + a_ch_mask_t
 
     # Build masks for excitation windows
@@ -630,8 +621,8 @@ def nsalex_apply_period(d, delete_ph_t=True):
             for i in range(0, len(A_ON_multi), 2)]
     # Mask for donor + acceptor detectors (discard other detectors)
     det_t = d.det_t[ich][:]
-    d_ch_mask_t = _selection_mask(det_t, donor_ch)
-    a_ch_mask_t = _selection_mask(det_t, accept_ch)
+    d_ch_mask_t = selection_mask(det_t, donor_ch)
+    a_ch_mask_t = selection_mask(det_t, accept_ch)
     da_ch_mask_t = d_ch_mask_t + a_ch_mask_t
 
     # Masks for excitation periods
@@ -682,8 +673,8 @@ def nsalex_apply_period(d, delete_ph_t=True):
 
 
 def _get_det_masks(det_t, det_ch1, det_ch2, valid, mask_ref=None, ich=0):
-    ch1_mask_t = _selection_mask(det_t, det_ch1)
-    ch2_mask_t = _selection_mask(det_t, det_ch2)
+    ch1_mask_t = selection_mask(det_t, det_ch1)
+    ch2_mask_t = selection_mask(det_t, det_ch2)
     both_ch_mask_t = ch1_mask_t + ch2_mask_t
     if mask_ref is not None:
         assert all(both_ch_mask_t == mask_ref)
