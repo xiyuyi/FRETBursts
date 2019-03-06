@@ -301,7 +301,7 @@ def _photon_hdf5_1ch(h5data, data, ondisk=False, nch=1, ich=0, loadspecs=True):
     if data.polarization:
         p_pol = np.atleast_1d(det_specs.polarization_ch1.read())
         s_pol = np.atleast_1d(det_specs.polarization_ch2.read())
-        _append_data_ch(data, 'det_s_p_pol', (p_pol, s_pol))
+        _append_data_ch(data, 'det_p_s_pol', (p_pol, s_pol))
 
     # Here there are all the special-case for each measurement type
     if data.spectral and not data.alternated:
