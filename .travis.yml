@@ -7,6 +7,9 @@ python:
     - "3.6"
     - "3.7"
 
+services:
+  - xvfb
+
 before_install:
     - wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
     - chmod +x miniconda.sh
@@ -33,9 +36,6 @@ before_script:
     - wget -N http://files.figshare.com/2182604/12d_New_30p_320mW_steer_3.hdf5
     - wget -N http://files.figshare.com/2182601/0023uLRpitc_NTP_20dT_0.5GndCl.hdf5
     - cd ../..
-    - "export DISPLAY=:99.0"
-    - "sh -e /etc/init.d/xvfb start"
-    - sleep 3
 
 script:
     - python -Wd fretbursts/tests/importtest.py
