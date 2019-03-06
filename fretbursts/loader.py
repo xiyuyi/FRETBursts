@@ -663,7 +663,7 @@ def nsalex_apply_period(d, delete_ph_t=True):
         # We also have polarization data
         p_polariz_ch, s_polariz_ch = d._det_p_s_pol_multich[ich]
         p_em, s_em = _get_det_masks(det_t, p_polariz_ch, s_polariz_ch, valid,
-                                    mask_ref=valid, ich=ich)
+                                    ich=ich)
         d.add(P_em=[p_em], S_em=[s_em])
 
     if delete_ph_t:
@@ -673,12 +673,18 @@ def nsalex_apply_period(d, delete_ph_t=True):
 
 
 def _get_det_masks(det_t, det_ch1, det_ch2, valid, mask_ref=None, ich=0):
+    """
+    Returns two masks for photons detected by `det_ch1` and `det_ch2`,
+    and being also `valid`. `valid` is a bool mask, same size as `det_t`,
+    which selects the photons considered "valid".
+    The returned masks have same size as `det_t` (and as `valid`).
+    """
     ch1_mask_t = selection_mask(det_t, det_ch1)
     ch2_mask_t = selection_mask(det_t, det_ch2)
-    both_ch_mask_t = ch1_mask_t + ch2_mask_t
     if mask_ref is not None:
+        both_ch_mask_t = ch1_mask_t + ch2_mask_t
         assert all(both_ch_mask_t == mask_ref)
-    # Apply selection to the polarization masks
+    # Apply "valid" selection to the channel masks
     ch1_mask = ch1_mask_t[valid]
     ch2_mask = ch2_mask_t[valid]
     assert (ch1_mask + ch2_mask).all()       # masks fill the total array
