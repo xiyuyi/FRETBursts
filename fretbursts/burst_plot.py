@@ -58,7 +58,7 @@ from . import burstlib as bl
 from .phtools import phrates
 from . import burstlib_ext as bext
 from . import background as bg
-from .utils.misc import HistData, _is_list_of_arrays
+from .utils.misc import HistData, _is_list_of_arrays, selection_mask
 from .scroll_gui import ScrollingToolQT
 from . import gui_selection as gs
 
@@ -185,7 +185,7 @@ def plot_alternation_hist_usalex(d, bins=None, ax=None, ich=0,
     offset = d.get('offset', 0)
     ph_times_t, det_t = d.ph_times_t[ich][:], d.det_t[ich][:]
     period = d.alex_period
-    d_em_t = (det_t == d_ch)
+    d_em_t = selection_mask(det_t, d_ch)
     hist_style_ = dict(bins=bins, histtype='step', lw=2, alpha=0.9, zorder=2)
     hist_style_.update(hist_style)
 
@@ -245,8 +245,8 @@ def plot_alternation_hist_nsalex(d, bins=None, ax=None, ich=0,
     for a_on in A_ON:
         A_label += '%d-%d' % (a_on[0], a_on[1])
 
-    nanotimes_d = d.nanotimes_t[ich][d.det_t[ich] == d_ch]
-    nanotimes_a = d.nanotimes_t[ich][d.det_t[ich] == a_ch]
+    nanotimes_d = d.nanotimes_t[ich][selection_mask(d.det_t[ich], d_ch)]
+    nanotimes_a = d.nanotimes_t[ich][selection_mask(d.det_t[ich], a_ch)]
 
     ax.hist(nanotimes_d, label=D_label, color=green, **hist_style_)
     ax.hist(nanotimes_a, label=A_label, color=red, **hist_style_)

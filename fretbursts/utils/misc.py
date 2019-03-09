@@ -13,6 +13,31 @@ import sys
 import numpy as np
 
 
+def selection_mask(arr, values):
+    """Return a boolean mask, True when `arr` is one element of `values`.
+
+    This function generalizes the comparison `arr == values`
+    where `values` can be a scalar or a sequence.
+    If a sequence, the returned mask is True each time `arr` has an element
+    in `values`.
+
+    Arguments:
+        arr (array): input array for which a mask is computed.
+        values (scalar or sequence): one or more values to be selected in
+            `arr`.
+    
+    Returns:
+        Boolean mask same size as `arr`. True where `arr` has an element 
+        in `values`.
+    """
+    values = np.atleast_1d(values)
+    mask = arr == values[0]
+    for value in values[1:]:
+        mask += arr == value
+    return mask
+
+
+
 def _is_list_of_arrays(obj):
     return isinstance(obj, list) and np.all([isinstance(v, np.ndarray)
                                              for v in obj])
