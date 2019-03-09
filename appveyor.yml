@@ -2,10 +2,6 @@ build: false
 
 environment:
   matrix:
-    - PYTHON: "C:\\Python27-x64"
-      PYTHON_VERSION: "2.7"
-      PYTHON_ARCH: "64"
-      MINICONDA: C:\Miniconda-x64
 
     - PYTHON: "C:\\Python36-x64"
       PYTHON_VERSION: "3.6"
@@ -29,10 +25,6 @@ install:
   - "conda create -q -n test-environment python=%PYTHON_VERSION% pip scipy pandas matplotlib lmfit cython numba nbconvert pytest ipykernel ipywidgets seaborn terminado"
   - activate test-environment
   - python -m pip install --upgrade pip
-  - ps: 'if($env:PYTHON_VERSION -eq "2.7"){pip install pathlib}'
-  - ps: 'if($env:PYTHON_VERSION -eq "2.7"){conda install --yes "phconvert<0.9"}'
-  - ps: 'if($env:PYTHON_VERSION -ne "2.7"){conda install --yes phconvert}'
-  - ps: 'if($env:PYTHON_VERSION -ne "2.7"){pip install pybroom}'
   - python --version
   - cd %APPVEYOR_BUILD_FOLDER%
   - dir
