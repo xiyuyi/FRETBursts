@@ -6,6 +6,9 @@ Version 0.7.1 (unreleased)
 
 - Fix error loading Photon-HDF5 files with polarization data
   (`issue <https://github.com/OpenSMFS/FRETBursts/issues/18>`__)
+- More fixes for PIE file with polarization, thanks to Christian Gebhardt 
+  for reporting the problem and suggesting solutions 
+  (`issue <https://github.com/OpenSMFS/FRETBursts/issues/25>`__)
 
 
 Version 0.7 (Jul. 2018)
