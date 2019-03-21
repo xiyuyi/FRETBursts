@@ -46,24 +46,42 @@ usual::
 The previous command installs or upgrades FRETBursts to the latest stable release.
 
 
-.. _source_install:
+Install FRETBursts in a stand-alone environment
+-----------------------------------------------
 
-Install FRETBursts in a dedicated environment
----------------------------------------------
-
-For reproducibiltity it is better to install FRETBursts in a dedicated environment.
+For reproducibiltity, it is better to install FRETBursts in a dedicated environment.
 The instructions below create a new conda environment with python 3.7:
 
-    conda create -n py37-sm python=3.7
-    conda activate py37-sm
-    conda install fretbursts
-    pip install pybroom
-    python -m ipykernel install --user --name py37-sm --display-name "py37-sm"
+First, add the ``conda-forge`` channel
+containing the fretbursts (do it only once after installing Anaconda)::
 
-The last command makes the environment ``py37-sm`` visible in jupyter notebook,
-in other words it creates the ipython kernel for the environment.
-Now you can use this kernel (and FRETBursts) with a jupyter notebook that you 
-run from the base environment.
+    conda config --append channels conda-forge
+
+Then create a new conda environment with python 3.7 and FRETbursts:
+
+    conda create -n py37-fb python=3.7 fretbursts
+    conda activate py37-fb
+    conda install pyqt   # optional
+    pip install pybroom  # optional
+    python -m ipykernel install --user --name py37-fb --display-name "Python 3.7 (FB)"
+
+The last command installs the
+`jupyter kernel <https://ipython.readthedocs.io/en/latest/install/kernel_install.html>`__
+so that you can use the new environment from jupyter notebooks.
+
+This method allows to easily backup and reinstall a working environment, or install
+it on a different machine (with same OS). This is useful for replicating
+an environment on multiple machine, for recovering from a broken anaconda
+installation or for reproducibility of published results.
+
+More info:
+
+- `Using conda environments <https://conda.io/docs/using/envs.html>`__
+- `Managing conda channels <https://conda.io/docs/user-guide/tasks/manage-channels.html>`__
+- `Installing a jupyter kernel <https://ipython.readthedocs.io/en/latest/install/kernel_install.html>`__
+
+
+.. _source_install:
 
 Install latest development version
 ----------------------------------
@@ -100,36 +118,3 @@ Also, make sure you have `lmfit` and `seaborn` installed before running
 FRETBursts.
 
 
-Install FRETBursts in a stand-alone environment
------------------------------------------------
-
-You can install FRETBursts in a stand-alone
-`conda environment <https://conda.io/docs/using/envs.html>`__.
-In this way,
-you can easily backup and reinstall a working environment, or install
-it on a different machine (with same OS). This is useful for replicating
-an environment on multiple machine, for recovering from a broken anaconda
-installation or for reproducibility of published results.
-
-As before, only the first time, you need to add the ``conda-forge`` channel
-which contains the fretbursts package::
-
-    conda config --append channels conda-forge
-
-This **appends** `conda-forge` to the channel list, with a lower
-priority than the default channel (see
-`conda docs <https://conda.io/docs/user-guide/tasks/manage-channels.html>`__).
-
-As an example, here we create a Python 3.6 environment called ``py36``::
-
-    conda create -n py36 python=3.6 fretbursts
-    conda activate py36
-    conda install fretbursts ipython
-    python -m ipykernel install --name py36 --display-name "Python 3.6"
-
-The last command installs the
-`jupyter kernel <https://ipython.readthedocs.io/en/latest/install/kernel_install.html>`__
-so that we can use the new environment from jupyter notebooks.
-
-For more info on conda environments see their documentation:
-`Managing environments <https://conda.io/docs/using/envs.html>`__.
