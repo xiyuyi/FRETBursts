@@ -57,7 +57,7 @@ containing the fretbursts (do it only once after installing Anaconda)::
 
     conda config --append channels conda-forge
 
-Then create a new conda environment with python 3.7 and FRETbursts:
+Then create a new conda environment with python 3.7 and FRETbursts::
 
     conda create -n py37-fb python=3.7 fretbursts
     conda activate py37-fb
