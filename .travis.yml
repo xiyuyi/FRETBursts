@@ -3,7 +3,6 @@ sudo: required
 dist: xenial
 
 python:
-    - "2.7"
     - "3.6"
     - "3.7"
 
@@ -22,10 +21,8 @@ install:
     - conda install --yes scipy pandas matplotlib cython numba pytest nbconvert ipykernel ipywidgets seaborn
     - conda config --append channels conda-forge
     - conda install --yes lmfit
-    - if [[ $TRAVIS_PYTHON_VERSION == '2.7' ]]; then pip install pathlib ; fi
-    - if [[ $TRAVIS_PYTHON_VERSION == '2.7' ]]; then conda install --yes "phconvert<0.9" ; fi
-    - if [[ $TRAVIS_PYTHON_VERSION != '2.7' ]]; then conda install --yes phconvert; fi
-    - if [[ $TRAVIS_PYTHON_VERSION != '2.7' ]]; then pip install pybroom ; fi
+    - conda install --yes phconvert
+    - pip install pybroom
     - python setup.py build
     - pip install .
     - rm -rf build/
