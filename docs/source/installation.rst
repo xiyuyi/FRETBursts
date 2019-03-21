@@ -48,6 +48,23 @@ The previous command installs or upgrades FRETBursts to the latest stable releas
 
 .. _source_install:
 
+Install FRETBursts in a dedicated environment
+---------------------------------------------
+
+For reproducibiltity it is better to install FRETBursts in a dedicated environment.
+The instructions below create a new conda environment with python 3.7:
+
+    conda create -n py37-sm python=3.7
+    conda activate py37-sm
+    conda install fretbursts
+    pip install pybroom
+    python -m ipykernel install --user --name py37-sm --display-name "py37-sm"
+
+The last command makes the environment ``py37-sm`` visible in jupyter notebook,
+in other words it creates the ipython kernel for the environment.
+Now you can use this kernel (and FRETBursts) with a jupyter notebook that you 
+run from the base environment.
+
 Install latest development version
 ----------------------------------
 
