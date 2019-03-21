@@ -43,6 +43,6 @@ test:
 
 
 about:
-  home: http://github.com/tritemio/FRETBursts/
+  home: http://github.com/OpenSMFS/FRETBursts/
   license: GPLv2
   summary: 'Burst analysis software for single and multi-spot smFRET data.'

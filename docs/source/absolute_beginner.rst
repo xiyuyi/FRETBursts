@@ -43,7 +43,7 @@ the FRETBursts notebooks.
 
 For first time users, we recommend to start from the notebook:
 
-- `FRETBursts - us-ALEX smFRET burst analysis <http://nbviewer.ipython.org/urls/raw.github.com/tritemio/FRETBursts_notebooks/master/notebooks/FRETBursts%2520-%2520us-ALEX%2520smFRET%2520burst%2520analysis.ipynb>`__
+- `FRETBursts - us-ALEX smFRET burst analysis <http://nbviewer.ipython.org/urls/raw.github.com/OpenSMFS/FRETBursts_notebooks/master/notebooks/FRETBursts%2520-%2520us-ALEX%2520smFRET%2520burst%2520analysis.ipynb>`__
 
 and follow the instructions therein.
 

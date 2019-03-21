@@ -97,7 +97,7 @@ works and which does not.
 
 You can install the latest development version directly from GitHub with::
 
-    pip install git+git://github.com/tritemio/FRETBursts.git
+    pip install git+git://github.com/OpenSMFS/FRETBursts.git
 
 .. note ::
     Note that the previous command fails if `git <http://git-scm.com/>`__
