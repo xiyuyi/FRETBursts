@@ -450,9 +450,9 @@ def timetrace_single(d, i=0, binwidth=1e-3, bins=None, tmin=0, tmax=200,
     if set_ax_limits:
         plt.xlim(tmin, tmin + 1)
         if not invert:
-            plt.ylim(ymax=100)
+            plt.ylim(top=100)
         else:
-            plt.ylim(ymin=-100)
+            plt.ylim(bottom=-100)
         _plot_status['timetrace_single'] = {'autoscale': False}
 
 
@@ -590,9 +590,9 @@ def ratetrace_single(d, i=0, m=None, max_num_ph=1e6, tmin=0, tmax=200,
     if set_ax_limits:
         plt.xlim(tmin, tmin + 1)
         if not invert:
-            plt.ylim(ymax=100)
+            plt.ylim(top=100)
         else:
-            plt.ylim(ymin=-100)
+            plt.ylim(bottom=-100)
         _plot_status['ratetrace_single'] = {'autoscale': False}
 
 

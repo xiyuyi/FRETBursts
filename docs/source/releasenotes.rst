@@ -4,6 +4,7 @@ FRETBursts Release Notes
 Version 0.7.1 (unreleased)
 -------------------------
 
+- Fix deprecation warning when plotting timetraces. Now matplotlib 3+ is required.
 - Fix error loading Photon-HDF5 files with polarization data
   (`issue <https://github.com/OpenSMFS/FRETBursts/issues/18>`__)
 - More fixes for PIE file with polarization, thanks to Christian Gebhardt 
