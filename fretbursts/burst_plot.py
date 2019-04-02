@@ -730,7 +730,7 @@ def timetrace_bg(d, i=0, nolegend=False, ncol=2, plot_style={}, show_da=False):
     plt.xlabel("Time (s)")
     plt.ylabel("BG rate (kcps)")
     plt.grid(True)
-    plt.ylim(ymin=0)
+    plt.ylim(bottom=0)
 
 
 def timetrace_b_rate(d, i=0):
@@ -745,7 +745,7 @@ def timetrace_b_rate(d, i=0):
     plot(t, b_rate, lw=2, label="CH%d" % (i+1))
     legend(loc='best', fancybox=True, frameon=False, ncol=3)
     xlabel("Time (s)"); ylabel("Burst per second"); grid(True)
-    plt.ylim(ymin=0)
+    plt.ylim(bottom=0)
 
 def time_ph(d, i=0, num_ph=1e4, ph_istart=0):
     """Plot 'num_ph' ph starting at 'ph_istart' marking burst start/end.
