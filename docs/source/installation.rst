@@ -77,7 +77,7 @@ installation or for reproducibility of published results.
 More info:
 
 - `Using conda environments <https://conda.io/docs/using/envs.html>`__
-- `Managing conda channels <https://conda.io/docs/user-guide/tasks/manage-channels.html>`__
+- `Managing conda channels <https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-channels.html`__
 - `Installing a jupyter kernel <https://ipython.readthedocs.io/en/latest/install/kernel_install.html>`__
 
 
@@ -116,5 +116,3 @@ It is recommended that you install `cython <http://cython.org/>`__ before
 FRETBursts so that the optimized C routines are installed as well.
 Also, make sure you have `lmfit` and `seaborn` installed before running
 FRETBursts.
-
-
