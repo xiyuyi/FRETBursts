@@ -77,7 +77,7 @@ installation or for reproducibility of published results.
 More info:
 
 - `Using conda environments <https://conda.io/docs/using/envs.html>`__
-- `Managing conda channels <https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-channels.html`__
+- `Managing conda channels <https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-channels.html>`__
 - `Installing a jupyter kernel <https://ipython.readthedocs.io/en/latest/install/kernel_install.html>`__
 
 
