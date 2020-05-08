@@ -32,3 +32,5 @@ notebooks/wip
 *.csv
 _*
 docs/source/modules/generated
+.DS_Store
+fretbursts/.DS_Store
